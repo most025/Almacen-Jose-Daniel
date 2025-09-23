@@ -13,7 +13,7 @@
     
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo"><img src="logo.png" alt="Descripción de la imagen" width="200" height="100"></div>
+      <div class="logo"><img src="../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
        <nav>
         <a href="index.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
         <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>

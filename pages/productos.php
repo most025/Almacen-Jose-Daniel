@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administrar Artículos</title>
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
-  <link rel="icon" href="logo.ico" type="icono1.ico">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../assets/js/script.js"></script>
+   <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
 </head>
 <body>
   <div class="container">

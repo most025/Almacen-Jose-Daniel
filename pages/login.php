@@ -14,12 +14,12 @@ if (isset($_SESSION['usuario'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="logo.ico" type="icono1.ico">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="icon" href="../assets/img/logo.ico" type="icono1.ico">
 </head>
 <body class="login-body">
   <div class="login-container">
-    <h1>Almacén</h1><div class="logo"><img src="logo.png" alt="Descripción de la imagen" width="200" height="100"></div>
+    <h1>Almacén</h1><div class="logo"><img src="../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
 
     <!-- Formulario de Ingreso -->
     <form action="procesar_login.php" method="POST" class="login-form">

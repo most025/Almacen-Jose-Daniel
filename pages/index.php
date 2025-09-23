@@ -17,7 +17,6 @@
         <a href="index.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
         <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
         <a href="productos.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
-        <a href="productos.php"><span class="icon">👥</span> <span class="text">productos</span></a>
         <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
         <a href="ventas.php"><span class="icon">💰</span> <span class="text">Ventas</span></a>
       </nav>

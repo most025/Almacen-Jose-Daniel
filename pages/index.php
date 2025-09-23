@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Programa</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="logo.ico" type="icono1.ico">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
 </head>
 <body>
   <div class="container">
     
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo"><img src="logo.png" alt="Descripción de la imagen" width="200" height="100"></div>
+      <div class="logo"><img src="../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
       <nav>
         <a href="index.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
         <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>

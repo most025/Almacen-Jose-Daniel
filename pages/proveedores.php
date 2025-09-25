@@ -1,3 +1,9 @@
+<?php
+include('../config/conexion.php');
+$sql = "SELECT * FROM proveedores";
+$ejecucionDeConsulta= mysqli_query($conexion, $sql);
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -58,21 +64,25 @@
             <thead>
               <tr>
                 <th>Nombre</th>
+                <th>direccion</th>
                 <th>Teléfono</th>
                 <th>Email</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
+              <?php while ($filas = mysqli_fetch_assoc($ejecucionDeConsulta)){ ?>
               <tr>
-                <td>Proveedor A</td>
-                <td>123456789</td>
-                <td>a@correo.com</td>
+                <td><?php echo $filas['nombre']; ?></td>
+                <td><?php echo $filas['direccion']; ?></td>
+                <td><?php echo $filas['telefono']; ?></td>
+                <td><?php echo $filas['email']; ?></td>
                 <td>
                   <button class="btn-secondary">Editar</button>
                   <button class="btn-primary">Eliminar</button>
                 </td>
               </tr>
+              <?php } ?>
             </tbody>
           </table>
         </div>
@@ -91,6 +101,9 @@
       </main>
     </div>
   </div>
+  <?php
+  mysqli_close($conexion);
+  ?>
 </body>
 
 </html>

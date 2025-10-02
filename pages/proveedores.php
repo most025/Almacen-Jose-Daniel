@@ -54,11 +54,12 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
         <!-- CRUD -->
         <div class="tab-content active" id="crud">
           <h3>CRUD de Proveedores</h3>
-          <form class="form-proveedor">
-            <input type="text" placeholder="Nombre del Proveedor">
-            <input type="text" placeholder="Teléfono">
-            <input type="text" placeholder="Email">
-            <button class="btn-primary" type="button">Agregar</button>
+          <form class="form-proveedor" method="post" action="../procesos/insertar_proveedores.php">
+            <input type="text" name="nombre" placeholder="Nombre del Proveedor" required>
+            <input type="text" name="direccion" placeholder="Dirección" required>
+            <input type="tel" name="telefono" placeholder="Teléfono" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button class="btn-primary" type="submit">Agregar</button>
           </form>
           <table class="tabla">
             <thead>
@@ -73,7 +74,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
             <tbody>
               <?php while ($filas = mysqli_fetch_assoc($ejecucionDeConsulta)){ ?>
               <tr>
-                <td><?php echo $filas['nombre']; ?></td>
+                <td><?php echo $filas['nombre_proveedor']; ?></td>
                 <td><?php echo $filas['direccion']; ?></td>
                 <td><?php echo $filas['telefono']; ?></td>
                 <td><?php echo $filas['email']; ?></td>

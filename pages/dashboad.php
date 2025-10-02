@@ -6,6 +6,7 @@
   <title>Programa</title>
   <link rel="stylesheet" href="../assets/css/styles.css">
 <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
+<script src="../dependencias/sweetalert2@11.js"></script>
 </head>
 <body>
   <div class="container">
@@ -29,8 +30,10 @@
       <header class="header">
         <h1 class="title">Inicio</h1>
         <div class="icons">
-          <span>👤</span>
-          <span>⚙️</span>
+          <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
+          <script src="../assets/js/alerta.js"></script>
+          <!-- <span>👤</span>
+          <span>⚙️</span> -->
         </div>
       </header>
 

@@ -14,3 +14,21 @@ document.getElementById("botonCerrar").addEventListener("click", () => {
     }
   });
 });
+
+function eliminarProveedor(id_proveedor) {
+  Swal.fire({
+    title: "¿Estás Seguro?",
+    text: "Estás a punto de eliminar este proveedor",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // window.location.href = "../../procesos/eliminar_proveedores.php?id_proveedor=" + id_proveedor;
+      window.location.href="../procesos/eliminar_proveedores.php?id_proveedor=" + id_proveedor;
+    }
+  });
+}

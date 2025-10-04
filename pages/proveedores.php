@@ -14,6 +14,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
   <link rel="stylesheet" href="../assets/css/styles.css">
   <script src="../assets/js/script.js"></script>
   <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
+  <script src="../dependencias/sweetalert2@11.js"></script>
 </head>
 
 <body>
@@ -80,7 +81,8 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
                 <td><?php echo $filas['email']; ?></td>
                 <td>
                   <button class="btn-secondary">Editar</button>
-                  <button class="btn-primary">Eliminar</button>
+                  <button class="btn-primary" onclick="eliminarProveedor(<?php echo $filas['id_proveedor']; ?>)">Eliminar</button>
+                    <script src="../assets/js/alerta.js"></script>
                 </td>
               </tr>
               <?php } ?>
@@ -105,6 +107,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
   <?php
   mysqli_close($conexion);
   ?>
+  <!-- <script src="../assets/js/alerta.js"></script> -->
 </body>
 
 </html>

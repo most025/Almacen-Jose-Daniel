@@ -80,7 +80,8 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
                 <td><?php echo $filas['telefono']; ?></td>
                 <td><?php echo $filas['email']; ?></td>
                 <td>
-                  <button class="btn-secondary">Editar</button>
+                  <button class="btn-secondary" onclick="window.location.href='editar_proveedor.php?id=<?php echo $filas['id_proveedor']; ?>'">Editar</button>
+
                   <button class="btn-primary" onclick="eliminarProveedor(<?php echo $filas['id_proveedor']; ?>)">Eliminar</button>
                     <script src="../assets/js/alerta.js"></script>
                 </td>

@@ -17,7 +17,7 @@
     <aside class="sidebar">
       <div class="logo"><img src="../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
       <nav>
-        <a href="index.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
+        <a href="dashboad.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
         <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
         <a href="productos.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
         <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>

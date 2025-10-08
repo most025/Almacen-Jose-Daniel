@@ -47,14 +47,14 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
       <main class="content">
         <!-- Tabs -->
         <div class="tabs">
-          <button class="tab-btn active" data-tab="crud">Agregar Proveedores (CRUD)</button>
-          <button class="tab-btn" data-tab="pedidos">Pedidos</button>
-          <button class="tab-btn" data-tab="pagos">Pagos</button>
+          <!-- <button class="tab-btn active" data-tab="crud">Agregar Proveedores</button> -->
+          <!-- <button class="tab-btn" data-tab="pedidos">Pedidos</button>
+          <button class="tab-btn" data-tab="pagos">Pagos</button> -->
         </div>
 
         <!-- CRUD -->
         <div class="tab-content active" id="crud">
-          <h3>CRUD de Proveedores</h3>
+          <h3>Proveedores</h3>
           <form class="form-proveedor" method="post" action="../procesos/insertar_proveedores.php">
             <input type="text" name="nombre" placeholder="Nombre del Proveedor" required>
             <input type="text" name="direccion" placeholder="Dirección" required>

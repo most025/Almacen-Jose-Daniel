@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-10-2025 a las 18:29:18
+-- Tiempo de generación: 08-10-2025 a las 19:51:56
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `categoria` (
   `descripcion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
+(1, 'Bebidas', 'Todos aquellos productos que sean bebidas');
+
 -- --------------------------------------------------------
 
 --
@@ -41,8 +48,7 @@ CREATE TABLE `categoria` (
 
 CREATE TABLE `clientes` (
   `id_cliente` int(11) NOT NULL,
-  `id_persona` int(11) NOT NULL,
-  `direccion` varchar(100) NOT NULL
+  `id_persona` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -71,7 +77,8 @@ CREATE TABLE `persona` (
   `nombre` varchar(100) NOT NULL,
   `apellido` varchar(100) NOT NULL,
   `telefono` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL
+  `email` varchar(100) NOT NULL,
+  `direccion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -110,8 +117,9 @@ CREATE TABLE `proveedores` (
 
 INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `telefono`, `email`) VALUES
 (2, 'almacen perez', 'calle falsa 32', '23000045', 'example@example.com'),
-(3, 'almacen sanchez', 'calle falsa 23', '68549393994', 'example12@example.com'),
-(6, 'rrr', 'r', '233', 'r@hh');
+(3, 'almacen sanchez', 'calle falsa 23', '68549393995', 'example13@example.com'),
+(10, 'fabian', 'falsa 323 av', '3444545', 'errrr@njnjnjnjm.com'),
+(17, 'jj', 'ereret', '3456789', 'mkgg@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -241,7 +249,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -271,7 +279,7 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`

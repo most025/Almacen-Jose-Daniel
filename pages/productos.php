@@ -1,3 +1,9 @@
+<?php
+include('../config/conexion.php');
+$sql = "SELECT * FROM categoria";
+$ejecucionDeConsulta= mysqli_query($conexion, $sql);
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,19 +59,23 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Nombre Categoría</th>
+                <th>Nombre de Categoría</th>
+                <th>Descripcion</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
+              <?php while ($filas = mysqli_fetch_assoc($ejecucionDeConsulta)){ ?>
               <tr>
-                <td>1</td>
-                <td>Bebidas</td>
+                <td><?php echo $filas['id_categoria']; ?></td>
+                <td><?php echo $filas['nombre_categoria']; ?></td>
+                <td><?php echo $filas['descripcion']; ?></td>
                 <td>
                   <button class="btn-secondary">Editar</button>
                   <button class="btn-primary">Eliminar</button>
                 </td>
               </tr>
+               <?php } ?>
             </tbody>
           </table>
         </div>
@@ -129,4 +139,7 @@
     </div>
   </div>
 </body>
+<?php
+mysqli_close($conexion);
+?>
 </html>

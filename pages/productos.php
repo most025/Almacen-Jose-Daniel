@@ -13,6 +13,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
   <link rel="stylesheet" href="../assets/css/styles.css">
   <script src="../assets/js/script.js"></script>
    <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
+   <script src="../dependencias/sweetalert2@11.js"></script>
 </head>
 <body>
   <div class="container">
@@ -35,8 +36,8 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
       <header class="header">
         <h1 class="title">Administrar Artículos</h1>
         <div class="icons">
-          <span>👤</span>
-          <span>⚙️</span>
+          <!-- <span>👤</span>
+          <span>⚙️</span> -->
         </div>
       </header>
 
@@ -45,20 +46,20 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
         <!-- Tabs -->
         <div class="tabs">
           <button class="tab-btn active" data-tab="categorias">Categorías</button>
-          <button class="tab-btn" data-tab="articulos">Artículos</button>
+          <button class="tab-btn" data-tab="articulos"><a href="articulos.php">Artículos</a></button>
         </div>
 
         <!-- CATEGORÍAS -->
         <div class="tab-content active" id="categorias">
           <h3>Gestión de Categorías</h3>
-          <form class="form-categoria">
-            <input type="text" placeholder="Nombre de la Categoría">
-            <button class="btn-primary" type="button">Agregar</button>
+          <form class="form-categoria" action="../procesos/insertar_categoria.php" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre de la Categoría" required>
+            <input type="text" name="descripcion" placeholder="Descripción de la Categoría" required>
+            <button class="btn-primary" type="submit">Agregar</button>
           </form>
           <table class="tabla">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Nombre de Categoría</th>
                 <th>Descripcion</th>
                 <th>Acciones</th>
@@ -67,12 +68,12 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
             <tbody>
               <?php while ($filas = mysqli_fetch_assoc($ejecucionDeConsulta)){ ?>
               <tr>
-                <td><?php echo $filas['id_categoria']; ?></td>
                 <td><?php echo $filas['nombre_categoria']; ?></td>
                 <td><?php echo $filas['descripcion']; ?></td>
                 <td>
                   <button class="btn-secondary">Editar</button>
-                  <button class="btn-primary">Eliminar</button>
+                  <button class="btn-primary" onclick="eliminarCategoria(<?php echo $filas['id_categoria']; ?>)">Eliminar</button>
+                  <script src="../assets/js/alerta.js"></script>
                 </td>
               </tr>
                <?php } ?>

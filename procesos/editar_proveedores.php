@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         text: 'Los datos del proveedor se han actualizado correctamente.',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
-                        window.location.href = '../pages/proveedores.php';
+                        window.location.href = '../pages/admin/proveedores.php';
                     });
                 </script>
             </body>

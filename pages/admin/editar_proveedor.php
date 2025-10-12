@@ -1,5 +1,5 @@
 <?php
-include('../config/conexion.php');
+include('../../config/conexion.php');
 
 if (isset($_GET['id'])) {
     $id_proveedor = $_GET['id'];
@@ -25,13 +25,13 @@ if (isset($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Proveedor</title>
     <!-- <link rel="stylesheet" href="../assets/css/styles.css"> -->
-     <link rel="stylesheet" href="../assets/css/edit.css">
-    <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
+     <link rel="stylesheet" href="../../assets/css/edit.css">
+    <link rel="shortcut icon" href="../../assets/img/logo.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
     <h2>Editar Proveedor</h2>
-    <form method="POST" action="../procesos/editar_proveedores.php">
+    <form method="POST" action="../../procesos/editar_proveedores.php">
         <p>Proveedor:</p>
         <input type="hidden" name="id_proveedor" value="<?php echo $proveedor['id_proveedor']; ?>">
         <input type="text" name="nombre" value="<?php echo $proveedor['nombre_proveedor']; ?>" required>

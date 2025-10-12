@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         text: 'El proveedor ha sido agregado exitosamente.',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
-                        window.location.href = '../pages/proveedores.php';
+                        window.location.href = '../pages/admin/proveedores.php';
                     });
                 </script>
             </body>

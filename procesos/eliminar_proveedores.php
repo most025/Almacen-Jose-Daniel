@@ -8,7 +8,7 @@ if (isset($_GET['id_proveedor'])) {
     if ($stmt) {
         $stmt->bind_param("i", $id_proveedor);
         if ($stmt->execute()) {
-            header("Location: ../pages/proveedores.php");
+            header("Location: ../pages/admin/proveedores.php");
             exit();
         }
     }

@@ -1,5 +1,5 @@
 <?php
-include('../config/conexion.php');
+include('../../config/conexion.php');
 $sql = "SELECT * FROM proveedores";
 $ejecucionDeConsulta= mysqli_query($conexion, $sql);
 
@@ -11,10 +11,10 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proveedores</title>
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <script src="../assets/js/script.js"></script>
-  <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
-  <script src="../dependencias/sweetalert2@11.js"></script>
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script src="../../assets/js/script.js"></script>
+  <link rel="shortcut icon" href="../../assets/img/logo.ico" type="image/x-icon">
+  <script src="../../dependencias/sweetalert2@11.js"></script>
 </head>
 
 <body>
@@ -22,9 +22,9 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
 
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo"><img src="../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
+      <div class="logo"><img src="../../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
       <nav>
-        <a href="dashboad.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
+        <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
         <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
         <a href="productos.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
         <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
@@ -55,7 +55,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
         <!-- CRUD -->
         <div class="tab-content active" id="crud">
           <h3>Proveedores</h3>
-          <form class="form-proveedor" method="post" action="../procesos/insertar_proveedores.php">
+          <form class="form-proveedor" method="post" action="../../procesos/insertar_proveedores.php">
             <input type="text" name="nombre" placeholder="Nombre del Proveedor" required>
             <input type="text" name="direccion" placeholder="Dirección" required>
             <input type="tel" name="telefono" placeholder="Teléfono" required>
@@ -83,7 +83,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
                   <button class="btn-secondary" onclick="window.location.href='editar_proveedor.php?id=<?php echo $filas['id_proveedor']; ?>'">Editar</button>
 
                   <button class="btn-primary" onclick="eliminarProveedor(<?php echo $filas['id_proveedor']; ?>)">Eliminar</button>
-                    <script src="../assets/js/alerta.js"></script>
+                    <script src="../../assets/js/alerta.js"></script>
                 </td>
               </tr>
               <?php } ?>

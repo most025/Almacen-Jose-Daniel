@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administrar Clientes</title>
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <script src="../assets/js/script.js"></script>
-  <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script src="../../assets/js/script.js"></script>
+  <link rel="shortcut icon" href="../../assets/img/logo.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
     
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo"><img src="../assets/img/logo.ico" width="200" height="100"></div>
+      <div class="logo"><img src="../../assets/img/logo.ico" width="200" height="100"></div>
       <nav>
-        <a href="dashboad.php">🏠 Inicio</a>
+        <a href="dashboard.php">🏠 Inicio</a>
         <a href="proveedores.php">📦 Proveedores</a>
-        <a href="administradores_de_artículos.php">🛠️ Artículos</a>
+        <a href="productos.php">🛠️ Artículos</a>
         <a href="clientes.php" class="active">👥 Clientes</a>
         <a href="ventas.php">💰 Ventas</a>
       </nav>

@@ -10,7 +10,7 @@ document.getElementById("botonCerrar").addEventListener("click", () => {
     cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
-      window.location.href = "../pages/salir.php";
+      window.location.href = "../../pages/salir.php";
     }
   });
 });
@@ -28,7 +28,7 @@ function eliminarProveedor(id_proveedor) {
   }).then((result) => {
     if (result.isConfirmed) {
       // window.location.href = "../../procesos/eliminar_proveedores.php?id_proveedor=" + id_proveedor;
-      window.location.href="../procesos/eliminar_proveedores.php?id_proveedor=" + id_proveedor;
+      window.location.href="../../procesos/eliminar_proveedores.php?id_proveedor=" + id_proveedor;
     }
   });
 }
@@ -44,7 +44,7 @@ function eliminarCategoria(id_categoria) {
     cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
-      window.location.href="../procesos/eliminar_categoria.php?id_categoria=" + id_categoria;
+      window.location.href="../../procesos/eliminar_categoria.php?id_categoria=" + id_categoria;
     }
   });
   

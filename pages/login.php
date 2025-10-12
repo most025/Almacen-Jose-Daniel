@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['usuario'] = $row['nombre_usuario'];
         $_SESSION['id_usuario'] = $row['id_usuario'];
 
-        header("Location: dashboad.php");
+        header("Location: admin/dashboard.php");
         exit();
     } else {
          echo "<script type='text/javascript'>alert('El Usuario y contraseña son incorrectos. Por favor, inténtalo de nuevo.');

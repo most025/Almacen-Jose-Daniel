@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-10-2025 a las 19:51:56
+-- Tiempo de generación: 14-10-2025 a las 18:37:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,7 +38,8 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
-(1, 'Bebidas', 'Todos aquellos productos que sean bebidas');
+(1, 'Bebidas', 'Todos aquellos productos que sean bebidas'),
+(2, 'enbutidos', 'todos los productos que sean enbutidos');
 
 -- --------------------------------------------------------
 
@@ -118,8 +119,8 @@ CREATE TABLE `proveedores` (
 INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `telefono`, `email`) VALUES
 (2, 'almacen perez', 'calle falsa 32', '23000045', 'example@example.com'),
 (3, 'almacen sanchez', 'calle falsa 23', '68549393995', 'example13@example.com'),
-(10, 'fabian', 'falsa 323 av', '3444545', 'errrr@njnjnjnjm.com'),
-(17, 'jj', 'ereret', '3456789', 'mkgg@gmail.com');
+(10, 'fabian', 'falsa 323 af', '3444545', 'fabian@njnjnjnjm.com'),
+(20, 'jose diaz', 'elf 32 ost', '94556575', 'jose@example.com');
 
 -- --------------------------------------------------------
 
@@ -159,7 +160,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `clave`, `id_rol`) VALUES
-(1, 'raiz45', '12345', 1);
+(1, 'raiz45', '12345', 1),
+(2, 'empleado1', '1234', 2);
 
 -- --------------------------------------------------------
 
@@ -249,7 +251,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -279,7 +281,7 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -291,7 +293,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`

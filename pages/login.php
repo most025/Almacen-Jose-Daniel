@@ -3,35 +3,49 @@ session_start();
 include("../config/conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $usuario = $_POST['usuario'];
-    $password = $_POST['password'];
+  $usuario = $_POST['usuario'];
+  $password = $_POST['password'];
 
-    // Consulta simple (OJO: vulnerable a SQL Injection si no validás bien los datos)
-    $sql = "SELECT * FROM usuarios WHERE nombre_usuario='$usuario' AND clave='$password'";
-    $result = mysqli_query($conexion, $sql);
+  
+  $sql = "SELECT * FROM usuarios WHERE nombre_usuario=? AND clave=?";
+  $stmt = mysqli_prepare($conexion, $sql);
+  mysqli_stmt_bind_param($stmt, "ss", $usuario, $password);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
 
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
 
-        // Guardar solo el usuario (no la clave)
-        $_SESSION['usuario'] = $row['nombre_usuario'];
-        $_SESSION['id_usuario'] = $row['id_usuario'];
 
+    // Guardar solo el usuario (no la clave)
+    $_SESSION['usuario'] = $row['nombre_usuario'];
+    // $_SESSION['id_usuario'] = $row['id_usuario'];
+    $_SESSION['rol'] = $row['id_rol'];
+
+    switch ($_SESSION['rol']) {
+      case 1:
         header("Location: admin/dashboard.php");
-        exit();
-    } else {
-         echo "<script type='text/javascript'>alert('El Usuario y contraseña son incorrectos. Por favor, inténtalo de nuevo.');
+        break;
+      case 2:
+        header("Location: vendedor/dashboard_vendedor.php");
+        break;
+    } 
+    // header("Location: admin/dashboard.php");
+    exit();
+  } else {
+    echo "<script type='text/javascript'>alert('El Usuario y contraseña son incorrectos. Por favor, inténtalo de nuevo.');
     location.assign('login.php');
     </script>";
-    }
+  }
 
-    mysqli_free_result($result);
+  mysqli_free_result($result);
 }
 
 mysqli_close($conexion);
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +53,7 @@ mysqli_close($conexion);
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="shortcut icon" href="../assets/img/logo.ico" type="image/x-icon">
 </head>
+
 <body class="login-body">
   <div class="login-container">
     <h1>Almacén</h1>
@@ -57,4 +72,5 @@ mysqli_close($conexion);
     </form>
   </div>
 </body>
+
 </html>

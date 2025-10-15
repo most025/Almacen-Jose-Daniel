@@ -66,10 +66,10 @@ mysqli_close($conexion);
       <button type="submit" class="btn-primary">Ingresar</button>
     </form>
 
-    <form action="invitado.php" method="POST" class="login-form">
+    <!-- <form action="invitado.php" method="POST" class="login-form">
       <h2>Entrar como invitado</h2>
       <button type="submit" class="btn-primary">Entrar como invitado</button>
-    </form>
+    </form> -->
   </div>
 </body>
 

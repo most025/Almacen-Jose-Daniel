@@ -87,8 +87,8 @@
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Cantidad</th>
+                  <th>Costo</th>
                   <th>Precio</th>
-                  <th>Imagen</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -100,7 +100,7 @@
                   <td>Botella 2L</td>
                   <td>50</td>
                   <td>$2.50</td>
-                  <td><img src="coca.jpg" alt="Coca" width="40"></td>
+                  <td>$3.50</td>
                   <td>
                     <button class="btn-secondary" onclick="window.location.href='editar_producto.php?id=<?php echo $fila['id_producto']; ?>'">Editar</button>
                     <button class="btn-primary" onclick="window.location.href='../procesos/eliminar_productos.php?id_producto=<?php echo $fila['id_producto']; ?>'">Eliminar</button>

@@ -80,65 +80,6 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
             </tbody>
           </table>
         </div>
-
-        <!-- ARTÍCULOS -->
-        <div class="tab-content" id="articulos">
-          <h3>Gestión de Artículos</h3>
-          <form class="form-articulo" enctype="multipart/form-data">
-            <!-- Selección de Categoría -->
-            <label for="categoria">Categoría:</label>
-            <select id="categoria">
-              <option value="">Selecciona Categoría</option>
-              <option value="1">Bebidas</option>
-              <option value="2">Snacks</option>
-            </select>
-
-            <!-- Datos del artículo -->
-            <input type="text" placeholder="Nombre del Artículo">
-            <textarea placeholder="Descripción"></textarea>
-            <input type="number" placeholder="Cantidad">
-            <input type="number" step="0.01" placeholder="Precio">
-
-            <!-- Imagen -->
-            <label for="imagen">Imagen:</label>
-            <input type="file" id="imagen">
-
-            <button class="btn-primary" type="button">Agregar</button>
-          </form>
-
-          <table class="tabla">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Categoría</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Bebidas</td>
-                <td>Coca-Cola</td>
-                <td>Botella 2L</td>
-                <td>50</td>
-                <td>$2.50</td>
-                <td><img src="coca.jpg" alt="Coca" width="40"></td>
-                <td>
-                  <button class="btn-secondary">Editar</button>
-                  <button class="btn-primary">Eliminar</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </main>
-    </div>
-  </div>
 </body>
 <?php
 mysqli_close($conexion);

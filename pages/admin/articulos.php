@@ -68,9 +68,10 @@
             <input type="text" placeholder="Nombre del Artículo">
             <textarea placeholder="Descripción"></textarea>
             <input type="number" placeholder="Cantidad">
+            <input type="number" step="0.01" placeholder="Costo">
             <input type="number" step="0.01" placeholder="Precio">
 
-            <label for="imagen">Imagen:</label>
+            <¡--<label for="imagen">Imagen:</label>
             <input type="file" id="imagen">
 
             <button class="btn-primary" type="button">Agregar</button>

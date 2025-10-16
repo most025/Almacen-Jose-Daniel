@@ -8,7 +8,7 @@ if (isset($_GET['id_categoria'])) {
     if ($stmt) {
         $stmt->bind_param("i", $id_categoria);
         if ($stmt->execute()) {
-            header("Location: ../pages/admin/productos.php");
+            header("Location: ../pages/admin/categoria.php");
             exit();
         }
     }

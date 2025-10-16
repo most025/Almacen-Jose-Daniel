@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         text: 'La categoría ha sido agregada exitosamente.',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
-                        window.location.href = '../pages/admin/productos.php';
+                        window.location.href = '../pages/admin/categoria.php';
                     });
                 </script>
             </body>

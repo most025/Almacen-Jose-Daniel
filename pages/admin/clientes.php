@@ -17,7 +17,7 @@
       <nav>
         <a href="dashboard.php">🏠 Inicio</a>
         <a href="proveedores.php">📦 Proveedores</a>
-        <a href="productos.php">🛠️ Artículos</a>
+        <a href="articulos.php">🛠️ Artículos</a>
         <a href="clientes.php" class="active">👥 Clientes</a>
         <a href="ventas.php">💰 Ventas</a>
       </nav>

@@ -49,7 +49,7 @@
         <main class="content">
         <!-- Tabs -->
         <div class="tabs">
-          <button class="tab-btn active" data-tab="categorias"><a href="productos.php">Categorías</a></button>
+          <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorías</a></button>
           <button class="tab-btn" data-tab="articulos"><a href="articulos.php">Artículos</a></button>
         </div>
       <main class="content">

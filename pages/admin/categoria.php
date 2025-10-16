@@ -15,6 +15,21 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
    <link rel="shortcut icon" href="../../assets/img/logo.ico" type="image/x-icon">
    <script src="../../dependencias/sweetalert2@11.js"></script>
 </head>
+<style>
+  .form-categoria-input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    width: 1100px;
+    background-color: #F5F5F0;
+  }
+  .tab-btn, a {
+    text-decoration: none;
+    color: #0d1b4c;
+    font-weight: bold;
+  }
+</style>
 <body>
   <div class="container">
     
@@ -45,7 +60,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
       <main class="content">
         <!-- Tabs -->
         <div class="tabs">
-          <button class="tab-btn active" data-tab="categorias">Categorías</button>
+          <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorias</a></button>
           <button class="tab-btn" data-tab="articulos"><a href="articulos.php">Artículos</a></button>
         </div>
 
@@ -53,8 +68,8 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
         <div class="tab-content active" id="categorias">
           <h3>Gestión de Categorías</h3>
           <form class="form-categoria" action="../../procesos/insertar_categoria.php" method="POST">
-            <input type="text" name="nombre" placeholder="Nombre de la Categoría" required>
-            <input type="text" name="descripcion" placeholder="Descripción de la Categoría" required>
+            <input class="form-categoria-input" type="text" name="nombre" placeholder="Nombre de la Categoría" required>
+            <input class="form-categoria-input" type="text" name="descripcion" placeholder="Descripción de la Categoría" required>
             <button class="btn-primary" type="submit">Agregar</button>
           </form>
           <table class="tabla">

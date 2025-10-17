@@ -38,8 +38,8 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
       <header class="header">
         <h1 class="title">Gestión de Proveedores</h1>
         <div class="icons">
-          <span>👤</span>
-          <span>⚙️</span>
+         <!--👤</span>
+          <span>⚙️</span>-->
         </div>
       </header>
 

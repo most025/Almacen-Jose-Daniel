@@ -31,8 +31,8 @@
       <header class="header">
         <h1 class="title">Ventas</h1>
         <div class="icons">
-          <span>👤</span>
-          <span>⚙️</span>
+          <!--<span>👤</span>
+          <span>⚙️</span>-->
         </div>
       </header>
 

@@ -42,8 +42,8 @@
       <header class="header">
         <h1 class="title">Administrar Articulos</h1>
         <div class="icons">
-          <span>👤</span>
-          <span>⚙️</span>
+          <!--<span>👤</span>
+          <span>⚙️</span>-->
         </div>
       </header>
         <main class="content">

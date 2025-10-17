@@ -21,7 +21,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 50px;
-    width: 1100px;
+    width: 530px;
     background-color: #F5F5F0;
   }
   .tab-btn, a {
@@ -29,6 +29,42 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
     color: #0d1b4c;
     font-weight: bold;
   }
+  .modal-agregar-categoria {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+  }
+  .modal-contenido {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%; 
+    border-radius: 10px;
+  }
+  .cerrar {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .cerrar:hover, .cerrar:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #tabla-categorias{
+    background-color: #0d1b4c;
+    color: white;
+  }
+
 </style>
 <body>
   <div class="container">
@@ -63,17 +99,49 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
           <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorias</a></button>
           <button class="tab-btn" data-tab="articulos"><a href="articulos.php">Artículos</a></button>
         </div>
+        <button class="btn-primary">Agregar Categoria</button>
 
         <!-- CATEGORÍAS -->
         <div class="tab-content active" id="categorias">
-          <h3>Gestión de Categorías</h3>
+          <!-- <h3>Gestión de Categorías</h3>
           <form class="form-categoria" action="../../procesos/insertar_categoria.php" method="POST">
             <input class="form-categoria-input" type="text" name="nombre" placeholder="Nombre de la Categoría" required>
             <input class="form-categoria-input" type="text" name="descripcion" placeholder="Descripción de la Categoría" required>
             <button class="btn-primary" type="submit">Agregar</button>
-          </form>
+          </form> -->
+          <!-- Modal para agregar categoría -->
+          <div id="modalAgregar" class="modal-agregar-categoria">
+            <div class="modal-contenido">
+              <span class="cerrar" onclick="cerrarModal()">&times;</span>
+              <h2>Agregar Nueva Categoría</h2>
+              <form class="form-categoria" action="../../procesos/insertar_categoria.php" method="POST">
+                <input class="form-categoria-input" type="text" name="nombre" placeholder="Nombre de la Categoría" required>
+                <input class="form-categoria-input" type="text" name="descripcion" placeholder="Descripción de la Categoría" required>
+                <button class="btn-primary" type="submit">Agregar</button>
+              </form>
+            </div>
+          </div>
+          <script>
+            // Función para abrir el modal
+            document.querySelector('.btn-primary').onclick = function() {
+              document.getElementById('modalAgregar').style.display = 'block';
+            }
+
+            // Función para cerrar el modal
+            function cerrarModal() {
+              document.getElementById('modalAgregar').style.display = 'none';
+            }
+
+            // Cerrar el modal si se hace clic fuera del contenido del modal
+            window.onclick = function(event) {
+              if (event.target == document.getElementById('modalAgregar')) {
+                cerrarModal();
+              }
+            }
+          </script>
+
           <table class="tabla">
-            <thead>
+            <thead id="tabla-categorias">
               <tr>
                 <th>Nombre de Categoría</th>
                 <th>Descripcion</th>

@@ -87,6 +87,8 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
       <header class="header">
         <h1 class="title">Administrar Artículos</h1>
         <div class="icons">
+          <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
+          <script src="../../assets/js/alerta.js"></script>
           <!-- <span>👤</span>
           <span>⚙️</span> -->
         </div>
@@ -99,7 +101,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
           <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorias</a></button>
           <button class="tab-btn" data-tab="articulos"><a href="articulos.php">Artículos</a></button>
         </div>
-        <button class="btn-primary">Agregar Categoria</button>
+        <button class="btn-primary" onclick="abrirModal()">Agregar Categoria</button>
 
         <!-- CATEGORÍAS -->
         <div class="tab-content active" id="categorias">
@@ -123,21 +125,23 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
           </div>
           <script>
             // Función para abrir el modal
-            document.querySelector('.btn-primary').onclick = function() {
-              document.getElementById('modalAgregar').style.display = 'block';
+            function abrirModal() {
+              document.getElementById("modalAgregar").style.display = "block";
             }
 
             // Función para cerrar el modal
             function cerrarModal() {
-              document.getElementById('modalAgregar').style.display = 'none';
+              document.getElementById("modalAgregar").style.display = "none";
             }
 
-            // Cerrar el modal si se hace clic fuera del contenido del modal
+            // Cerrar el modal si se hace clic fuera de él
             window.onclick = function(event) {
-              if (event.target == document.getElementById('modalAgregar')) {
-                cerrarModal();
+              var modal = document.getElementById("modalAgregar");
+              if (event.target == modal) {
+                modal.style.display = "none";
               }
             }
+            
           </script>
 
           <table class="tabla">

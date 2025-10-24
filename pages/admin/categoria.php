@@ -49,6 +49,26 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
     width: 40%; 
     border-radius: 10px;
   }
+  .modal-editar-categoria {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+  }
+  .modal-contenido-editar-categoria {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%; 
+    border-radius: 10px;
+  }
   .cerrar {
     color: #aaa;
     float: right;
@@ -56,6 +76,17 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
     font-weight: bold;
   }
   .cerrar:hover, .cerrar:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .cerrarEditarCategoria {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .cerrarEditarCategoria:hover, .cerrarEditarCategoria:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -141,6 +172,28 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
                 modal.style.display = "none";
               }
             }
+            function abrirModalEditar(id_categoria, nombre, descripcion) {
+              document.getElementById("editarCategoria").style.display = "block";
+              document.getElementById("id_categoria").value = id_categoria;
+              document.getElementById("nombre_edit").value = nombre;
+              document.getElementById("descripcion_edit").value = descripcion;
+            }
+            // Función para cerrar el modal de edición
+            function cerrarModalEditar() {
+              document.getElementById("editarCategoria").style.display = "none";
+            }
+            window.onclick = function(event) {
+  var modalEditar = document.getElementById("editarCategoria");
+  var modalAgregar = document.getElementById("modalAgregar");
+  if (event.target == modalEditar) {
+    modalEditar.style.display = "none";
+  }
+  if (event.target == modalAgregar) {
+    modalAgregar.style.display = "none";
+  }
+}
+
+
             
           </script>
 
@@ -158,7 +211,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
                 <td><?php echo $filas['nombre_categoria']; ?></td>
                 <td><?php echo $filas['descripcion']; ?></td>
                 <td>
-                  <button class="btn-secondary">Editar</button>
+                  <button class="btn-secondary" onclick="abrirModalEditar(<?php echo $filas['id_categoria']; ?>, '<?php echo $filas['nombre_categoria']; ?>', '<?php echo $filas['descripcion']; ?>')">Editar</button>
                   <button class="btn-primary" onclick="eliminarCategoria(<?php echo $filas['id_categoria']; ?>)">Eliminar</button>
                   <script src="../../assets/js/alerta.js"></script>
                 </td>
@@ -166,6 +219,18 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
                <?php } ?>
             </tbody>
           </table>
+        </div>
+        <div id="editarCategoria" class="modal-editar-categoria">
+          <div class="modal-contenido-editar-categoria">
+            <span class="cerrarEditarCategoria" onclick="cerrarModalEditar()">&times;</span>
+            <h2>Editar Categoría</h2>
+            <form class="form-categoria" action="../../procesos/editar_categoria.php" method="POST">
+              <input type="hidden" id="id_categoria" name="id_categoria">
+              <input class="form-categoria-input" type="text" id="nombre_edit" name="nombre" placeholder="Nombre de la Categoría" required>
+              <input class="form-categoria-input" type="text" id="descripcion_edit" name="descripcion" placeholder="Descripción de la Categoría" required>
+              <button class="btn-primary" type="submit">Guardar Cambios</button>
+            </form>
+          </div>
         </div>
 </body>
 <?php

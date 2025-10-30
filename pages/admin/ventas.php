@@ -1,23 +1,57 @@
+<?php
+// ventas.php - versión corregida
+
+// Conexión a la base de datos (ajusta si usas otro usuario/contraseña)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "almacen_db";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Consulta para mostrar productos del inventario (solo con stock > 0)
+$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.precio_venta, ip.stockDisponible
+        FROM carga_productos cp
+        INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
+        WHERE ip.stockDisponible > 0
+        ORDER BY cp.nombre_producto ASC";
+
+$result = $conn->query($sql);
+
+// Si hubo error en la consulta, lo registramos y $result se convertirá en null
+if ($result === false) {
+    error_log("Error en consulta SQL: " . $conn->error);
+    $result = null;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ventas</title>
-  <link rel="stylesheet" href="../../assets/css/styles.css">
-  <script src="../../assets/js/script.js"></script>
-  <link rel="shortcut icon" href="../../assets/img/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/estilos.css">
+  <script defer src="script.js"></script>
+  <link rel="icon" href="logo.ico" type="icono1.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Estilos básicos para que se vea ordenado */
+    body { background: #f5f7fb; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    .container { padding-top: 20px; }
+    .card { border-radius: 10px; }
+    .producto-item .border { min-height: 120px; }
+  </style>
 </head>
-
 <body>
   <div class="container">
-
     <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo"><img src="../../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
-      <nav>
-        <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
+    <aside class="sidebar mb-4">
+      <div class="logo"><img src="logo.png" alt="Descripción de la imagen" width="200" height="100"></div>
+       <nav>
+        <a href="index.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
         <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
         <a href="articulos.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
         <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
@@ -28,116 +62,187 @@
     <!-- Main -->
     <div class="main">
       <!-- Header -->
-      <header class="header">
+      <header class="header mb-4 d-flex justify-content-between align-items-center">
         <h1 class="title">Ventas</h1>
         <div class="icons">
-          <!--<span>👤</span>
-          <span>⚙️</span>-->
+          <span>👤</span>
+          <span>⚙️</span>
         </div>
       </header>
 
       <!-- Content -->
       <main class="content">
         <!-- Tabs -->
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="vender">Vender Producto</button>
-          <button class="tab-btn" data-tab="reportes">Reportes y Ventas</button>
+        <div class="tabs mb-4">
+          <button class="tab-btn active btn btn-sm btn-outline-success" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
+          <button class="tab-btn btn btn-sm btn-outline-secondary" data-tab="reportes">Reportes y Ventas</button>
         </div>
 
-        <!-- VENDER PRODUCTO -->
-        <div class="tab-content active" id="vender">
-          <div class="venta-grid">
-            <!-- Formulario de venta -->
-            <div class="venta-form">
-              <h3>Vender un producto</h3>
-              <form>
-                <label>Selecciona Cliente:</label>
-                <select>
-                  <option value="">-- Seleccionar Cliente --</option>
-                  <option value="1">Carlos Pérez</option>
-                  <option value="2">Ana López</option>
-                </select>
+        <div class="container">
+          <div class="row">
+            <!-- Productos disponibles -->
+            <div class="col-lg-7 col-md-12 mb-4">
+              <div class="card p-4">
+                <h2>Listado de Productos</h2>
 
-                <label>Selecciona Producto:</label>
-                <select>
-                  <option value="">-- Seleccionar Producto --</option>
-                  <option value="1">Coca-Cola</option>
-                  <option value="2">Papas Fritas</option>
-                </select>
+                <!-- Buscador -->
+                <div class="mb-3">
+                  <input type="text" id="buscadorProductos" class="form-control" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
+                </div>
 
-                <label>Descripción:</label>
-                <input type="text" placeholder="Descripción">
+                <div class="row">
+                  <?php
+                  // Si $result es nulo o no tiene filas mostramos mensaje
+                  if ($result && $result->num_rows > 0):
+                    while ($prod = $result->fetch_assoc()):
+                      // seguridad: escapar salida
+                      $id = (int)$prod['id_carga'];
+                      $nombre = htmlspecialchars($prod['nombre_producto'], ENT_QUOTES, 'UTF-8');
+                      $precio = number_format((float)$prod['precio_venta'], 2, '.', '');
+                      $stock = (int)$prod['stockDisponible'];
+                  ?>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3 producto-item">
+                      <div class="border p-2 rounded">
+                        <strong><?php echo $nombre; ?></strong><br>
+                        <span>💲<?php echo $precio; ?></span><br>
+                        <small>Stock: <?php echo $stock; ?></small><br>
 
-                <label>Cantidad:</label>
-                <input type="number" placeholder="Cantidad">
+                        <input type="checkbox" name="productos[]" value="<?php echo $id; ?>"
+                               data-nombre="<?php echo $nombre; ?>"
+                               data-precio="<?php echo $precio; ?>"
+                               data-stock="<?php echo $stock; ?>"
+                               onclick="actualizarProductos(this)">
+                        <label> Seleccionar</label>
 
-                <label>Precio:</label>
-                <input type="number" step="0.01" placeholder="Precio">
-
-                <button class="btn-primary" type="button">Agregar al carrito</button>
-              </form>
+                        <select class="form-control cantidad mt-2" name="cantidad_<?php echo $id; ?>"
+                                style="display:none;" onchange="actualizarTotal()">
+                          <?php for ($i = 1; $i <= $stock; $i++): ?>
+                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                          <?php endfor; ?>
+                        </select>
+                      </div>
+                    </div>
+                  <?php
+                    endwhile;
+                  else:
+                  ?>
+                    <div class="col-12">
+                      <div class="alert alert-info">No hay productos disponibles en inventario.</div>
+                    </div>
+                  <?php endif; ?>
+                </div>
+              </div>
             </div>
 
-            <!-- Carrito de venta -->
-            <div class="venta-carrito">
-              <h3>Hacer Venta</h3>
-              <p><strong>Nombre de cliente:</strong> <span id="clienteVenta">No seleccionado</span></p>
-              <table class="tabla">
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Quitar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Coca-Cola</td>
-                    <td>Botella 2L</td>
-                    <td>$2.50</td>
-                    <td>2</td>
-                    <td><button class="btn-secondary">X</button></td>
-                  </tr>
-                </tbody>
-              </table>
-              <p><strong>Total de venta:</strong> $0</p>
-              <button class="btn-primary">Finalizar Venta</button>
+            <!-- Formulario de venta -->
+            <div class="col-lg-5 col-md-12">
+              <div class="card p-4">
+                <h2>Registrar Venta</h2>
+                <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
+                  <div class="mb-3">
+                    <label for="cliente">Nombre del Cliente</label>
+                    <input type="text" name="cliente" class="form-control" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="metodo_pago">Método de Pago</label>
+                    <select class="form-control" name="metodo_pago" required>
+                      <option value="" disabled selected>Seleccione</option>
+                      <option value="Efectivo">Efectivo</option>
+                      <option value="Transferencia">Transferencia</option>
+                      <option value="Tarjeta">Tarjeta</option>
+                    </select>
+                  </div>
+
+                  <input type="hidden" name="productos_seleccionados" id="productos_seleccionados">
+                  <input type="hidden" name="total_venta" id="total_venta">
+
+                  <div class="mb-3">
+                    <label>Productos Seleccionados:</label>
+                    <ul id="listaProductos" class="ps-3"></ul>
+                  </div>
+
+                  <div class="mb-3">
+                    <h4>Total: 💰$<span id="total">0.00</span></h4>
+                  </div>
+
+                  <button type="submit" class="btn btn-success w-100">Confirmar Venta</button>
+                           </form>
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- REPORTES -->
-        <div class="tab-content" id="reportes">
-          <h3>Reportes y Ventas</h3>
-          <table class="tabla">
-            <thead>
-              <tr>
-                <th>Folio</th>
-                <th>Fecha</th>
-                <th>Cliente</th>
-                <th>Total de compra</th>
-                <th>Ticket</th>
-                <th>Reporte</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>001</td>
-                <td>2025-09-15</td>
-                <td>Carlos Pérez</td>
-                <td>$50.00</td>
-                <td><button class="btn-secondary">Descargar PDF</button></td>
-                <td><button class="btn-primary">Descargar PDF</button></td>
-              </tr>
-            </tbody>
-          </table>
         </div>
 
       </main>
     </div>
   </div>
-</body>
+</div>
 
+<script>
+function validarFormulario() {
+  var checkboxes = document.querySelectorAll('input[name="productos[]"]:checked');
+  if (checkboxes.length === 0) {
+    alert('Debe seleccionar al menos un producto.');
+    return false;
+  }
+
+  let productos = [];
+  checkboxes.forEach(function(cb) {
+    let nombre = cb.dataset.nombre;
+    let precio = parseFloat(cb.dataset.precio);
+    // si el select está oculto por algún motivo, asumimos cantidad 1
+    let sel = cb.closest('.p-2').querySelector('select');
+    let cantidad = sel ? parseInt(sel.value) : 1;
+    productos.push({ nombre: nombre, precio: precio, cantidad: cantidad, id: cb.value });
+  });
+
+  document.getElementById('productos_seleccionados').value = JSON.stringify(productos);
+  document.getElementById('total_venta').value = document.getElementById('total').textContent;
+  return true;
+}
+
+function actualizarProductos(checkbox) {
+  const select = checkbox.closest('.p-2').querySelector('select');
+  if (!select) return;
+  select.style.display = checkbox.checked ? 'block' : 'none';
+  if (!checkbox.checked) select.value = 1;
+  actualizarTotal();
+}
+
+function actualizarTotal() {
+  let total = 0;
+  const lista = document.getElementById('listaProductos');
+  lista.innerHTML = '';
+
+  document.querySelectorAll('input[name="productos[]"]:checked').forEach(cb => {
+    const precio = parseFloat(cb.dataset.precio);
+    const select = cb.closest('.p-2').querySelector('select');
+    const cantidad = select ? parseInt(select.value) : 1;
+    total += precio * cantidad;
+
+    const li = document.createElement('li');
+    li.textContent = `${cb.dataset.nombre} x${cantidad} - $${(precio * cantidad).toFixed(2)}`;
+    lista.appendChild(li);
+  });
+
+  document.getElementById('total').textContent = total.toFixed(2);
+}
+
+function filtrarProductos() {
+  const input = document.getElementById('buscadorProductos');
+  if (!input) return;
+  const filtro = input.value.toLowerCase();
+  document.querySelectorAll('.producto-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(filtro) ? '' : 'none';
+  });
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+<?php
+// cerrar conexión
+$conn->close();
+?>

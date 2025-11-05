@@ -159,7 +159,7 @@ p {
               </tr>
             </thead>
             <tbody>
-              <?php while ($p = mysqli_fetch_assoc($productos)) { ?>
+              <?php while ($p = mysqli_fetch_assoc($ejecucionDeConsulta)) { ?>
                 <tr>
                   <td><?php echo $p['nombre_producto']; ?></td>
                   <td><?php echo $p['categoria']; ?></td>

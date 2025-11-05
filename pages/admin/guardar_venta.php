@@ -1,38 +1,73 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "almacen_db");
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
+// Conexión a la base de datos
+$conn = new mysqli("localhost", "root", "", "almacen_jose_daniel");
+if ($conn->connect_error) die("Conexión fallida: " . $conn->connect_error);
+
+// Datos del formulario
+$cliente = trim($_POST['cliente']);
+$metodo_pago = trim($_POST['metodo_pago']);
+$total_venta = floatval($_POST['total_venta']);
+$fecha_venta = date("Y-m-d");
+
+// Decodificar JSON de productos
+$productos_json = $_POST['productos_seleccionados'];
+$productos = json_decode($productos_json, true);
+
+if (!$productos || count($productos) === 0) {
+    die("❌ No hay productos seleccionados.");
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $cliente = $conn->real_escape_string($_POST['cliente']);
-  $metodo_pago = $conn->real_escape_string($_POST['metodo_pago']);
-  $productos = json_decode($_POST['productos_seleccionados'], true);
-  $total_venta = floatval($_POST['total_venta']);
+// Crear la descripción agrupada y actualizar stock
+$descripcion_arr = [];
+foreach ($productos as $p) {
+    $id_carga = intval($p['id_carga']);
+    $cantidad = intval($p['cantidad']);
 
-  foreach ($productos as $prod) {
-    $id_carga = intval($prod['id']);
-    $cantidad = intval($prod['cantidad']);
-    $subtotal = $prod['precio'] * $cantidad;
+    // Obtener nombre del producto y stock actual
+    $stmt = $conn->prepare("SELECT nombre_producto, stockDisponible FROM carga_productos cp
+                            INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
+                            WHERE cp.id_carga = ?");
+    $stmt->bind_param("i", $id_carga);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows === 0) {
+        die("❌ Producto con id $id_carga no encontrado.");
+    }
+    $row = $res->fetch_assoc();
+    $nombre = $row['nombre_producto'];
+    $stock_actual = intval($row['stockDisponible']);
+    $stmt->close();
 
-    // Obtener id_inventario
-    $res = $conn->query("SELECT id_inventario, stockDisponible FROM inventario_productos WHERE id_carga = $id_carga");
-    $inv = $res->fetch_assoc();
-    $id_inventario = $inv['id_inventario'];
-    $stockActual = $inv['stockDisponible'];
+    if ($cantidad > $stock_actual) {
+        die("❌ Stock insuficiente para $nombre. Disponible: $stock_actual, pedido: $cantidad.");
+    }
 
-    // Insertar venta
-    $conn->query("INSERT INTO ventas_productos (id_inventario, cantidad_vendida, total_venta, metodo_pago)
-                  VALUES ($id_inventario, $cantidad, $subtotal, '$metodo_pago')");
+    $descripcion_arr[] = "$nombre x$cantidad";
 
-    // Descontar stock
-    $nuevoStock = max(0, $stockActual - $cantidad);
-    $conn->query("UPDATE inventario_productos SET stockDisponible = $nuevoStock WHERE id_inventario = $id_inventario");
-  }
-
-  echo "<script>
-          alert('✅ Venta registrada correctamente');
-          window.location.href = 'reporte_ventas.php';
-        </script>";
+    // Actualizar stock
+    $nuevo_stock = $stock_actual - $cantidad;
+    $stmt2 = $conn->prepare("UPDATE inventario_productos SET stockDisponible = ? WHERE id_carga = ?");
+    $stmt2->bind_param("ii", $nuevo_stock, $id_carga);
+    $stmt2->execute();
+    $stmt2->close();
 }
+
+// Insertar venta (una sola fila con productos agrupados)
+$descripcion_final = implode(", ", $descripcion_arr);
+$stmt3 = $conn->prepare("INSERT INTO ventas_productos
+    (descripcion, cliente, total_venta, fecha_venta, metodo_pago)
+    VALUES (?, ?, ?, ?, ?)");
+$stmt3->bind_param("ssdss",  $descripcion_final, $cliente, $total_venta, $fecha_venta, $metodo_pago);
+
+if ($stmt3->execute()) {
+    echo "✅ Venta registrada correctamente.";
+    // Redirigir a reporte de ventas
+    header("Location: reporte_ventas.php");
+    exit;
+} else {
+    echo "❌ Error al registrar venta: " . $stmt3->error;
+}
+
+$stmt3->close();
+$conn->close();
 ?>

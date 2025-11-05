@@ -5,7 +5,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "almacen_db";
+$dbname = "almacen_jose_daniel";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
@@ -33,13 +33,13 @@ if ($result === false) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ventas</title>
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/estilos1.css">
   <script defer src="script.js"></script>
   <link rel="icon" href="logo.ico" type="icono1.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     /* Estilos básicos para que se vea ordenado */
-    body { background: #f5f7fb; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { background: #1c56caff; font-family: 'Segoe UI', Tahoma, sans-serif; }
     .container { padding-top: 20px; }
     .card { border-radius: 10px; }
     .producto-item .border { min-height: 120px; }
@@ -75,7 +75,7 @@ if ($result === false) {
         <!-- Tabs -->
         <div class="tabs mb-4">
           <button class="tab-btn active btn btn-sm btn-outline-success" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
-          <button class="tab-btn btn btn-sm btn-outline-secondary" data-tab="reportes">Reportes y Ventas</button>
+          <a href="reporte_ventas.php" class="btn btn-sm btn-outline-success">Reportes y Ventas</a>
         </div>
 
         <div class="container">
@@ -150,7 +150,6 @@ if ($result === false) {
                       <option value="" disabled selected>Seleccione</option>
                       <option value="Efectivo">Efectivo</option>
                       <option value="Transferencia">Transferencia</option>
-                      <option value="Tarjeta">Tarjeta</option>
                     </select>
                   </div>
 
@@ -167,7 +166,7 @@ if ($result === false) {
                   </div>
 
                   <button type="submit" class="btn btn-success w-100">Confirmar Venta</button>
-                           </form>
+                 </form>
               </div>
             </div>
           </div>
@@ -186,18 +185,35 @@ function validarFormulario() {
     return false;
   }
 
-  let productos = [];
+  let productos = [];     // Para enviar al PHP y actualizar stock
+  let descripcion = [];   // Para mostrar y guardar en ventas_productos
+  let total = 0;
+
   checkboxes.forEach(function(cb) {
     let nombre = cb.dataset.nombre;
     let precio = parseFloat(cb.dataset.precio);
-    // si el select está oculto por algún motivo, asumimos cantidad 1
+    let id_carga = cb.value;
     let sel = cb.closest('.p-2').querySelector('select');
     let cantidad = sel ? parseInt(sel.value) : 1;
-    productos.push({ nombre: nombre, precio: precio, cantidad: cantidad, id: cb.value });
+
+    productos.push({ id_carga: id_carga, cantidad: cantidad });
+    descripcion.push(`${nombre} x${cantidad}`);
+    total += precio * cantidad;
   });
 
+  // Guardar en hidden inputs
   document.getElementById('productos_seleccionados').value = JSON.stringify(productos);
-  document.getElementById('total_venta').value = document.getElementById('total').textContent;
+  document.getElementById('total_venta').value = total.toFixed(2);
+
+  // Actualizar lista visual en el formulario
+  const lista = document.getElementById('listaProductos');
+  lista.innerHTML = '';
+  descripcion.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    lista.appendChild(li);
+  });
+
   return true;
 }
 
@@ -239,9 +255,11 @@ function filtrarProductos() {
 }
 </script>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 <?php
 // cerrar conexión
 $conn->close();

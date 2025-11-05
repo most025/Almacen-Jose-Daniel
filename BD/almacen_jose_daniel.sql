@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-10-2025 a las 18:37:32
+-- Tiempo de generación: 04-11-2025 a las 20:13:49
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,8 +18,25 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `almacen_jose_daniel`
+-- Base de datos: `f`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `carga_productos`
+--
+
+CREATE TABLE `carga_productos` (
+  `id_carga` int(11) NOT NULL,
+  `nombre_producto` varchar(100) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `categoria` varchar(50) DEFAULT NULL,
+  `precio_compra` decimal(10,2) DEFAULT NULL,
+  `precio_venta` decimal(10,2) DEFAULT NULL,
+  `fecha_carga` datetime DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -29,17 +46,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categoria` (
   `id_categoria` int(11) NOT NULL,
-  `nombre_categoria` varchar(100) NOT NULL,
-  `descripcion` varchar(100) NOT NULL
+  `nombre_categoria` varchar(100) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `categoria`
---
-
-INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
-(1, 'Bebidas', 'Todos aquellos productos que sean bebidas'),
-(2, 'enbutidos', 'todos los productos que sean enbutidos');
 
 -- --------------------------------------------------------
 
@@ -49,53 +58,40 @@ INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALU
 
 CREATE TABLE `clientes` (
   `id_cliente` int(11) NOT NULL,
-  `id_persona` int(11) NOT NULL
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `dni` int(100) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `telefono` int(11) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle_venta`
+-- Estructura de tabla para la tabla `inventario_productos`
 --
 
-CREATE TABLE `detalle_venta` (
-  `id_detalle` int(11) NOT NULL,
-  `id_venta` int(11) NOT NULL,
-  `id_producto` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `precio_unitario` decimal(10,2) NOT NULL,
-  `subtotal` decimal(12,2) NOT NULL
+CREATE TABLE `inventario_productos` (
+  `id_inventario` int(11) NOT NULL,
+  `id_carga` int(11) DEFAULT NULL,
+  `stockDisponible` int(11) DEFAULT NULL,
+  `fecha_actualizacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `persona`
+-- Estructura de tabla para la tabla `ofertas_productos`
 --
 
-CREATE TABLE `persona` (
-  `id_persona` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `telefono` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `direccion` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `productos`
---
-
-CREATE TABLE `productos` (
-  `id_producto` int(11) NOT NULL,
-  `nombre_producto` varchar(100) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `precio` decimal(10,2) NOT NULL,
-  `stock` int(11) NOT NULL,
-  `id_proveedor` int(11) DEFAULT NULL,
-  `id_categoria` int(11) NOT NULL
+CREATE TABLE `ofertas_productos` (
+  `id_oferta` int(11) NOT NULL,
+  `id_inventario` int(11) DEFAULT NULL,
+  `descuento_porcentaje` decimal(5,2) DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `estado` enum('Activa','Inactiva') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -106,21 +102,11 @@ CREATE TABLE `productos` (
 
 CREATE TABLE `proveedores` (
   `id_proveedor` int(11) NOT NULL,
-  `nombre_proveedor` varchar(100) NOT NULL,
-  `direccion` varchar(100) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `email` varchar(100) NOT NULL
+  `nombre_proveedor` varchar(100) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `proveedores`
---
-
-INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `telefono`, `email`) VALUES
-(2, 'almacen perez', 'calle falsa 32', '23000045', 'example@example.com'),
-(3, 'almacen sanchez', 'calle falsa 23', '68549393995', 'example13@example.com'),
-(10, 'fabian', 'falsa 323 af', '3444545', 'fabian@njnjnjnjm.com'),
-(20, 'jose diaz', 'elf 32 ost', '94556575', 'jose@example.com');
 
 -- --------------------------------------------------------
 
@@ -130,17 +116,9 @@ INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `tel
 
 CREATE TABLE `roles` (
   `id_rol` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
   `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `roles`
---
-
-INSERT INTO `roles` (`id_rol`, `nombre`, `descripcion`) VALUES
-(1, 'Administrador', 'Acceso total al sistema'),
-(2, 'Vendedor', 'Puede realizar ventas y consultar productos');
 
 -- --------------------------------------------------------
 
@@ -150,36 +128,37 @@ INSERT INTO `roles` (`id_rol`, `nombre`, `descripcion`) VALUES
 
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
-  `nombre_usuario` varchar(50) NOT NULL,
-  `clave` varchar(100) NOT NULL,
-  `id_rol` int(11) NOT NULL
+  `nombre_usuario` varchar(50) DEFAULT NULL,
+  `clave` varchar(100) DEFAULT NULL,
+  `id_rol` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuarios`
---
-
-INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `clave`, `id_rol`) VALUES
-(1, 'raiz45', '12345', 1),
-(2, 'empleado1', '1234', 2);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ventas`
+-- Estructura de tabla para la tabla `ventas_productos`
 --
 
-CREATE TABLE `ventas` (
+CREATE TABLE `ventas_productos` (
   `id_venta` int(11) NOT NULL,
-  `id_cliente` int(11) DEFAULT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `fecha` datetime DEFAULT current_timestamp(),
-  `total` decimal(12,2) NOT NULL
+  `cliente` varchar(100) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `total_venta` decimal(10,2) DEFAULT NULL,
+  `fecha_venta` datetime DEFAULT NULL,
+  `metodo_pago` varchar(50) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `carga_productos`
+--
+ALTER TABLE `carga_productos`
+  ADD PRIMARY KEY (`id_carga`),
+  ADD KEY `id_categoria` (`id_categoria`);
 
 --
 -- Indices de la tabla `categoria`
@@ -191,30 +170,21 @@ ALTER TABLE `categoria`
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`id_cliente`),
-  ADD KEY `id_persona` (`id_persona`);
+  ADD PRIMARY KEY (`id_cliente`);
 
 --
--- Indices de la tabla `detalle_venta`
+-- Indices de la tabla `inventario_productos`
 --
-ALTER TABLE `detalle_venta`
-  ADD PRIMARY KEY (`id_detalle`),
-  ADD KEY `id_venta` (`id_venta`),
-  ADD KEY `id_producto` (`id_producto`);
+ALTER TABLE `inventario_productos`
+  ADD PRIMARY KEY (`id_inventario`),
+  ADD KEY `id_carga` (`id_carga`);
 
 --
--- Indices de la tabla `persona`
+-- Indices de la tabla `ofertas_productos`
 --
-ALTER TABLE `persona`
-  ADD PRIMARY KEY (`id_persona`);
-
---
--- Indices de la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`id_producto`),
-  ADD KEY `id_proveedor` (`id_proveedor`),
-  ADD KEY `id_categoria` (`id_categoria`);
+ALTER TABLE `ofertas_productos`
+  ADD PRIMARY KEY (`id_oferta`),
+  ADD KEY `id_inventario` (`id_inventario`);
 
 --
 -- Indices de la tabla `proveedores`
@@ -236,22 +206,27 @@ ALTER TABLE `usuarios`
   ADD KEY `id_rol` (`id_rol`);
 
 --
--- Indices de la tabla `ventas`
+-- Indices de la tabla `ventas_productos`
 --
-ALTER TABLE `ventas`
+ALTER TABLE `ventas_productos`
   ADD PRIMARY KEY (`id_venta`),
-  ADD KEY `id_cliente` (`id_cliente`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_cliente` (`id_cliente`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
+-- AUTO_INCREMENT de la tabla `carga_productos`
+--
+ALTER TABLE `carga_productos`
+  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -260,45 +235,39 @@ ALTER TABLE `clientes`
   MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `detalle_venta`
+-- AUTO_INCREMENT de la tabla `inventario_productos`
 --
-ALTER TABLE `detalle_venta`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `inventario_productos`
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `persona`
+-- AUTO_INCREMENT de la tabla `ofertas_productos`
 --
-ALTER TABLE `persona`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `productos`
---
-ALTER TABLE `productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `ofertas_productos`
+  MODIFY `id_oferta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `ventas`
+-- AUTO_INCREMENT de la tabla `ventas_productos`
 --
-ALTER TABLE `ventas`
+ALTER TABLE `ventas_productos`
   MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -306,24 +275,22 @@ ALTER TABLE `ventas`
 --
 
 --
--- Filtros para la tabla `clientes`
+-- Filtros para la tabla `carga_productos`
 --
-ALTER TABLE `clientes`
-  ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`id_persona`) REFERENCES `persona` (`id_persona`);
+ALTER TABLE `carga_productos`
+  ADD CONSTRAINT `carga_productos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`);
 
 --
--- Filtros para la tabla `detalle_venta`
+-- Filtros para la tabla `inventario_productos`
 --
-ALTER TABLE `detalle_venta`
-  ADD CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`) ON DELETE CASCADE,
-  ADD CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
+ALTER TABLE `inventario_productos`
+  ADD CONSTRAINT `inventario_productos_ibfk_1` FOREIGN KEY (`id_carga`) REFERENCES `carga_productos` (`id_carga`);
 
 --
--- Filtros para la tabla `productos`
+-- Filtros para la tabla `ofertas_productos`
 --
-ALTER TABLE `productos`
-  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id_proveedor`) ON DELETE SET NULL,
-  ADD CONSTRAINT `productos_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`);
+ALTER TABLE `ofertas_productos`
+  ADD CONSTRAINT `ofertas_productos_ibfk_1` FOREIGN KEY (`id_inventario`) REFERENCES `inventario_productos` (`id_inventario`);
 
 --
 -- Filtros para la tabla `usuarios`
@@ -332,11 +299,10 @@ ALTER TABLE `usuarios`
   ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
 
 --
--- Filtros para la tabla `ventas`
+-- Filtros para la tabla `ventas_productos`
 --
-ALTER TABLE `ventas`
-  ADD CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE SET NULL,
-  ADD CONSTRAINT `ventas_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL;
+ALTER TABLE `ventas_productos`
+  ADD CONSTRAINT `ventas_productos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

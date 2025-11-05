@@ -204,6 +204,7 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
                   <button class="btn-secondary"
                     onclick="abrirModalEditar(<?php echo $filas['id_cliente']; ?>, '<?php echo $filas['nombre']; ?>', '<?php echo $filas['apellido']; ?>', '<?php echo $filas['dni']; ?>', '<?php echo $filas['direccion']; ?>', '<?php echo $filas['email']; ?>', '<?php echo $filas['telefono']; ?>')">Editar</button>
                   <button class="btn-primary" onclick="eliminarCliente(<?php echo $filas['id_cliente']; ?>)">Eliminar</button>
+                  <!-- <script src="../../assets/js/alerta.js"></script> -->
                 </td>
               </tr>
             <?php } ?>

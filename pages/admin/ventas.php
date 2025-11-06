@@ -185,7 +185,8 @@ if ($result === false) {
             <main class="content">
                 <div class="tabs">
                     <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
-                    <a href="reporte_ventas.php" class="link-ventas">📊 Reportes y Ventas</a>
+                    <button class="tab-btn active" onclick="window.location.href='reporte_ventas.php'">Reportes y Ventas</button>
+                    
                 </div>
 
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">

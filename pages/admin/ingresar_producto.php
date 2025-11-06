@@ -217,6 +217,7 @@ if (isset($_GET['eliminar'])) {
                     </script>
 
                     <!-- Tabla -->
+                     
                     <table class="tabla">
                         <thead class="tabla-encabezado">
                             <tr>
@@ -229,6 +230,7 @@ if (isset($_GET['eliminar'])) {
                             </tr>
                         </thead>
                         <tbody>
+                            
                             <?php
                             $sql = "SELECT cp.id_carga, cp.nombre_producto, cp.categoria, cp.precio_compra, cp.precio_venta, ip.stockDisponible
                                     FROM carga_productos cp
@@ -247,7 +249,7 @@ if (isset($_GET['eliminar'])) {
                                             <td>{$producto['stockDisponible']}</td>
                                             <td>
                                                 <button class='btn-secondary' onclick=\"window.location.href='editar_producto.php?id={$producto['id_carga']}'\">Editar</button>
-                                                <button class='btn-primary' onclick=\"if(confirm('¿Seguro que deseas eliminar {$nombre}?')) window.location.href='?eliminar={$producto['id_carga']}';\">Eliminar</button>
+                                                
                                             </td>
                                           </tr>";
                                 }

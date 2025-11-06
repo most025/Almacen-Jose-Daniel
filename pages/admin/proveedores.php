@@ -225,7 +225,7 @@ window.onclick = function(event) {
                 <td>
                   <button class="btn-secondary" onclick="abrirModalEditar(<?php echo $filas['id_proveedor']; ?>, '<?php echo $filas['nombre_proveedor']; ?>', '<?php echo $filas['direccion']; ?>', '<?php echo $filas['telefono']; ?>', '<?php echo $filas['email']; ?>')">Editar</button>
 
-                  <button class="btn-primary" onclick="eliminarProveedor(<?php echo $filas['id_proveedor']; ?>)">Eliminar</button>
+                  <!--<button class="btn-primary" onclick="eliminarProveedor(<?php echo $filas['id_proveedor']; ?>)">Eliminar</button>-->
                     <script src="../../assets/js/alerta.js"></script>
                 </td>
               </tr>

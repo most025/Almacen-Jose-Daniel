@@ -12,7 +12,7 @@ $precio_venta = $_POST['precio_venta'];
 $stock = $_POST['stock'];
 
 // Insertar en carga_productos
-$sql1 = "INSERT INTO carga_productos (nombre_producto, descripcion, categoria, precio_compra, precio_venta) 
+$sql1 = "INSERT INTO carga_productos (nombre_producto, descripcion, id_categoria, precio_compra, precio_venta) 
          VALUES ('$nombre', '$descripcion', '$categoria', '$precio_compra', '$precio_venta')";
 
 if ($conn->query($sql1) === TRUE) {

@@ -187,8 +187,20 @@ if (isset($_GET['eliminar'])) {
                                 <textarea name="descripcion" class="form-control" rows="2" required></textarea>
 
                                 <label class="form-label">Categoría</label>
-                                <input type="text" name="categoria" class="form-control" placeholder="Ej: Alimentos"
-                                    required>
+                                <?php
+                                $consulta="SELECT id_categoria, nombre_categoria FROM categoria";
+                                $resultado = $conn->query($consulta);
+                                ?>
+
+                                <select name="categoria" id="categoria">
+                                    <option value="" disabled selected>Seleccione una categoría</option>
+                                    <?php while ($row = $resultado->fetch_assoc()){ ?>
+                                        <option value="<?php echo $row['id_categoria']; ?>"><?php echo $row['nombre_categoria']; ?></option>
+                                    <?php } 
+                                    // mysqli_close($conn);
+
+                                    ?>
+                                </select>
 
                                 <label class="form-label">Precio de Compra</label>
                                 <input type="number" name="precio_compra" class="form-control" step="0.01" min="0"

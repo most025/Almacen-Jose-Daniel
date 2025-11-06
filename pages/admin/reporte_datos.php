@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $password = "";
-$dbname = "almacen_jose_daniel"; 
+$dbname = "almacen_jose_daniel";
 
 $conn = new mysqli($host, $user, $password, $dbname);
 if ($conn->connect_error) {
@@ -31,49 +31,109 @@ $resultado = $conn->query($sql);
 <head>
 <meta charset="UTF-8">
 <title>Reporte de Ventas <?= ucfirst(htmlspecialchars($filtro)) ?></title>
-<link rel="icon" href="logo.ico" type="image/x-icon">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="icon" href="../../assets/img/logo.ico" type="image/x-icon">
 <style>
-body {
-  background-color: #f8f9fa;
-  font-family: 'Segoe UI', sans-serif;
-  color: #333;
-  margin: 20px;
-}
-.table-wrapper {
-  overflow-x: auto;
-}
-.btn-imprimir {
-  display: block;
-  margin: 30px auto;
-  background-color: #0d1b4c;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn-imprimir:hover {
-  background-color: #0a3b99;
-}
-.resumen {
-  background-color: #e9ecef;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 20px;
-}
-footer {
-  text-align: center;
-  font-size: 12px;
-  color: #777;
-  margin-top: 40px;
-}
-@media print {
-  .btn-imprimir { display: none; }
-  body { background: white; margin: 0; }
-}
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6fa;
+        color: #333;
+        margin: 20px;
+    }
+
+    h5 {
+        color: #0d1b4c;
+        margin-bottom: 10px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    thead {
+        background-color: #0d1b4c;
+        color: white;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #eef2ff;
+    }
+
+    .btn-ticket {
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn-ticket:hover {
+        background-color: #005fa3;
+    }
+
+    .resumen {
+        background-color: #e9ecef;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+        line-height: 1.6;
+    }
+
+    .resumen ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .resumen li {
+        margin: 5px 0;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-muted {
+        color: #777;
+    }
+
+    .text-danger {
+        color: #c0392b;
+    }
+
+    footer {
+        text-align: center;
+        font-size: 12px;
+        color: #777;
+        margin-top: 30px;
+    }
+
+    @media print {
+        body { background: white; margin: 0; }
+        .btn-ticket { display: none; }
+    }
 </style>
 </head>
 <body>
@@ -81,8 +141,8 @@ footer {
 <?php if ($resultado && $resultado->num_rows > 0): ?>
 
   <div class="table-wrapper">
-    <table class="table table-bordered table-striped text-center align-middle">
-      <thead class="table-dark">
+    <table>
+      <thead>
         <tr>
           <th>Venta N°</th>
           <th>Producto</th>
@@ -94,31 +154,28 @@ footer {
       </thead>
       <tbody>
       <?php 
-      $totalGeneral = 0;
       $totalEfectivo = 0;
       $totalTransferencia = 0;
 
       while ($fila = $resultado->fetch_assoc()):
-          $totalGeneral += (float)$fila['total_venta'];
+          $total = (float)$fila['total_venta'];
           $metodo = strtolower(trim($fila['metodo_pago'] ?? ''));
 
           if ($metodo === 'efectivo') {
-              $totalEfectivo += (float)$fila['total_venta'];
+              $totalEfectivo += $total;
           } elseif ($metodo === 'transferencia') {
-              $totalTransferencia += (float)$fila['total_venta'];
+              $totalTransferencia += $total;
           }
       ?>
         <tr>
           <td><?= htmlspecialchars($fila['id_venta']) ?></td>
           <td><?= htmlspecialchars($fila['producto']) ?></td>
           <td><?= htmlspecialchars($fila['cliente']) ?></td>
-          <td><strong>$<?= number_format($fila['total_venta'], 2) ?></strong></td>
+          <td><strong>$<?= number_format($total, 2) ?></strong></td>
           <td><?= htmlspecialchars($fila['metodo_pago']) ?></td>
           <td>
-      <a href="generar_ticket.php?id_venta=<?= urlencode($fila['id_venta']) ?>" class="btn btn-success btn-sm">
-        Ticket
-      </a>
-    </td>
+              <a href="generar_ticket.php?id_venta=<?= urlencode($fila['id_venta']) ?>" class="btn-ticket">🎟️ Ticket</a>
+          </td>
         </tr>
       <?php endwhile; ?>
       </tbody>
@@ -134,7 +191,6 @@ footer {
     </ul>
   </div>
 
-  
 <?php else: ?>
   <p class="text-center text-muted mt-4">No se encontraron ventas registradas.</p>
 <?php endif; ?>
@@ -147,3 +203,4 @@ footer {
 </html>
 
 <?php $conn->close(); ?>
+

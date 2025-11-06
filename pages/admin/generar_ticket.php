@@ -131,7 +131,7 @@ $conn->close();
     <div class="ticket">
         <!-- Encabezado -->
         <div class="ticket-header">
-            <img src="logo.ico" alt="Logo">
+            <div class="logo"><img src="../../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
             <small>📍 San Juan</small>
         </div>
 

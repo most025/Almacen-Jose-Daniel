@@ -232,9 +232,9 @@ if (isset($_GET['eliminar'])) {
                         <tbody>
                             
                             <?php
-                            $sql = "SELECT cp.id_carga, cp.nombre_producto, cp.categoria, cp.precio_compra, cp.precio_venta, ip.stockDisponible
-                                    FROM carga_productos cp
-                                    LEFT JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
+                            $sql = "SELECT cp.id_carga, cp.nombre_producto, c.nombre_categoria, cp.precio_compra, cp.precio_venta, ip.stockDisponible
+                                    FROM carga_productos cp  INNER JOIN categoria c ON cp.id_categoria = c.id_categoria
+                                    INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
                                     ORDER BY cp.id_carga DESC";
                             $result = $conn->query($sql);
 
@@ -243,7 +243,7 @@ if (isset($_GET['eliminar'])) {
                                     $nombre = htmlspecialchars($producto['nombre_producto']);
                                     echo "<tr>
                                             <td>{$nombre}</td>
-                                            <td>{$producto['categoria']}</td>
+                                            <td>{$producto['nombre_categoria']}</td>
                                             <td>\${$producto['precio_compra']}</td>
                                             <td>\${$producto['precio_venta']}</td>
                                             <td>{$producto['stockDisponible']}</td>

@@ -130,7 +130,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
         <!-- Tabs -->
         <div class="tabs">
           <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorias</a></button>
-          <button class="tab-btn" data-tab="articulos"><a href="articulos.php">Artículos</a></button>
+          <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
         </div>
         <button class="btn-primary" onclick="abrirModal()">Agregar Categoria</button>
 

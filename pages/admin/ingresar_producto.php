@@ -160,6 +160,7 @@ if (isset($_GET['eliminar'])) {
                 <!-- Tabs -->
                 <div class="tabs">
                     <button class="tab-btn active" onclick="abrirModalProveedor()">Agregar Productos</button>
+                    <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorías</a></button>
                 </div>
 
                 <!-- CRUD -->

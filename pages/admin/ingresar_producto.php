@@ -108,15 +108,15 @@ if (isset($_GET['eliminar'])) {
             border-radius: 5px;
             color: white;
         }
-        .btn-primary {
+        /* .btn-primary {
             background-color: #0d1b4c;
-        }
+        } */
         .btn-secondary {
             background-color: #888;
         }
-        .btn-primary:hover {
+        /* .btn-primary:hover {
             background-color: #142a6e;
-        }
+        } */
         .btn-secondary:hover {
             background-color: #666;
         }
@@ -125,6 +125,17 @@ if (isset($_GET['eliminar'])) {
             font-weight: bold;
             color: black;
             font-size: 11px;
+        }
+        #boton-secundario{
+            background-color: #FFE797;
+        }
+        #boton-secundario:hover{
+            background-color: #FFD966;
+        }
+        #link-categorias {
+            text-decoration: none;
+            color: #37353E;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -160,7 +171,7 @@ if (isset($_GET['eliminar'])) {
                 <!-- Tabs -->
                 <div class="tabs">
                     <button class="tab-btn active" onclick="abrirModalProveedor()">Agregar Productos</button>
-                    <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorías</a></button>
+                    <button class="tab-btn active" id="boton-secundario" data-tab="categorias"><a id="link-categorias" href="categoria.php">Categorías</a></button>
                 </div>
 
                 <!-- CRUD -->

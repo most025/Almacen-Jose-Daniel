@@ -102,11 +102,11 @@ if ($result === false) {
             text-align: center;
         }
 
-        .btn-primary { background-color: #0d1b4c; }
+        /* .btn-primary { background-color: #0d1b4c; } */
         .btn-secondary { background-color: #888; }
         .btn-success { background-color: #1c56ca; }
 
-        .btn-primary:hover { background-color: #142a6e; }
+        /* .btn-primary:hover { background-color: #e66e1d; } */
         .btn-success:hover { background-color: #2a64d1; }
 
         .lista {
@@ -128,7 +128,7 @@ if ($result === false) {
         }
 
         .tab-btn:hover {
-            background-color: #142a6e;
+            background-color: #e66e1d;
         }
 
         .alert-info {
@@ -178,6 +178,7 @@ if ($result === false) {
                 <h1 class="title">Gestión de Ventas</h1>
                 <div class="icons">
                     <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
+                    <script src="../../assets/js/alerta.js"></script>
                 </div>
             </header>
 

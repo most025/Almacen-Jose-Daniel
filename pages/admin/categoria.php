@@ -26,7 +26,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
   }
   .tab-btn, a {
     text-decoration: none;
-    color: #0d1b4c;
+    color: #F9F8F6;
     font-weight: bold;
   }
   .modal-agregar-categoria {
@@ -95,6 +95,14 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
     background-color: #0d1b4c;
     color: white;
   }
+  #boton-secundario{
+    background-color: #FFE797;
+    color: #37353E;
+    font-weight: bold;
+  }
+  #boton-secundario:hover{
+    background-color: #FFD966;
+  }
 
 </style>
 <body>
@@ -130,7 +138,7 @@ $ejecucionDeConsulta= mysqli_query($conexion, $sql);
         <!-- Tabs -->
         <div class="tabs">
           <button class="tab-btn active" data-tab="categorias"><a href="categoria.php">Categorias</a></button>
-          <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
+          <button class="tab-btn active" id="boton-secundario" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
         </div>
         <button class="btn-primary" onclick="abrirModal()">Agregar Categoria</button>
 

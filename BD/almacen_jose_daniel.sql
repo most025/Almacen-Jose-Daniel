@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2025 a las 20:13:49
+-- Tiempo de generación: 08-11-2025 a las 21:58:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `f`
+-- Base de datos: `almacen_jose_daniel`
 --
 
 -- --------------------------------------------------------
@@ -31,12 +31,20 @@ CREATE TABLE `carga_productos` (
   `id_carga` int(11) NOT NULL,
   `nombre_producto` varchar(100) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
-  `categoria` varchar(50) DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
   `precio_compra` decimal(10,2) DEFAULT NULL,
   `precio_venta` decimal(10,2) DEFAULT NULL,
-  `fecha_carga` datetime DEFAULT NULL,
-  `id_categoria` int(11) DEFAULT NULL
+  `fecha_carga` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `carga_productos`
+--
+
+INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_compra`, `precio_venta`, `fecha_carga`) VALUES
+(1, 'leche ilolay', 'leche de segunda marca', 1, 200.99, 400.99, NULL),
+(2, 'la serenisima', 'la mas natural', 1, 1200.99, 3200.00, NULL),
+(3, 'Arroz Integral 0000-Tio carlos', 'Paquete de arroz integral', 2, 2972.99, 5500.99, NULL);
 
 -- --------------------------------------------------------
 
@@ -49,6 +57,14 @@ CREATE TABLE `categoria` (
   `nombre_categoria` varchar(100) DEFAULT NULL,
   `descripcion` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
+(1, 'Lacteos', 'todos los lacteos.'),
+(2, 'Cereal', 'Alimentos a base hidratos de carbonos y proteínas.');
 
 -- --------------------------------------------------------
 
@@ -66,6 +82,13 @@ CREATE TABLE `clientes` (
   `email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido`, `dni`, `direccion`, `telefono`, `email`) VALUES
+(1, 'jorge', 'sanchez', 40593079, 'cfcfct', 3444549, 'crrrrc@rryryry');
+
 -- --------------------------------------------------------
 
 --
@@ -78,6 +101,15 @@ CREATE TABLE `inventario_productos` (
   `stockDisponible` int(11) DEFAULT NULL,
   `fecha_actualizacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventario_productos`
+--
+
+INSERT INTO `inventario_productos` (`id_inventario`, `id_carga`, `stockDisponible`, `fecha_actualizacion`) VALUES
+(1, 1, 12, NULL),
+(2, 2, 300, NULL),
+(3, 3, 500, NULL);
 
 -- --------------------------------------------------------
 
@@ -108,6 +140,13 @@ CREATE TABLE `proveedores` (
   `email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `proveedores`
+--
+
+INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `telefono`, `email`) VALUES
+(1, 'almacen sanchez', 'falsa 323 af', '3444549', 'almacensanchez@nhygygyg.com');
+
 -- --------------------------------------------------------
 
 --
@@ -116,9 +155,16 @@ CREATE TABLE `proveedores` (
 
 CREATE TABLE `roles` (
   `id_rol` int(11) NOT NULL,
-  `nombre` varchar(50) DEFAULT NULL,
+  `rol` varchar(50) DEFAULT NULL,
   `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id_rol`, `rol`, `descripcion`) VALUES
+(1, 'administrador', 'tiene control total del sistema');
 
 -- --------------------------------------------------------
 
@@ -132,6 +178,13 @@ CREATE TABLE `usuarios` (
   `clave` varchar(100) DEFAULT NULL,
   `id_rol` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `clave`, `id_rol`) VALUES
+(1, 'raiz45', '12345', 1);
 
 -- --------------------------------------------------------
 
@@ -220,25 +273,25 @@ ALTER TABLE `ventas_productos`
 -- AUTO_INCREMENT de la tabla `carga_productos`
 --
 ALTER TABLE `carga_productos`
-  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario_productos`
 --
 ALTER TABLE `inventario_productos`
-  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ofertas_productos`
@@ -250,19 +303,19 @@ ALTER TABLE `ofertas_productos`
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas_productos`

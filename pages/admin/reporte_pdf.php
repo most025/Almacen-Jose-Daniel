@@ -10,12 +10,12 @@ $dbname = "almacen_jose_daniel";
 
 $conn = new mysqli($host, $user, $password, $dbname);
 if ($conn->connect_error) {
-    die("<p class='text-danger'>Error de conexión.</p>");
+    die("<p style='color:red;'>Error de conexión a la base de datos.</p>");
 }
 
 $filtro = $_GET['filtro'] ?? 'diario';
 
-// Consulta principal de ventas
+// === CONSULTA PRINCIPAL ===
 if ($filtro == 'mensual') {
     $sql = "SELECT id_venta, descripcion AS producto, cliente, total_venta, metodo_pago, fecha_venta
             FROM ventas_productos
@@ -31,18 +31,18 @@ if ($filtro == 'mensual') {
 
 $resultado = $conn->query($sql);
 
-// Calcular total de ventas en efectivo
+// === Calcular total en efectivo ===
 $total_efectivo = 0;
 if ($resultado && $resultado->num_rows > 0) {
-    $resultado->data_seek(0); // reinicia el puntero
+    $resultado->data_seek(0);
     while ($fila = $resultado->fetch_assoc()) {
-        if (strtolower($fila['metodo_pago']) == 'efectivo') {
-            $total_efectivo += $fila['total_venta'];
+        if (strtolower(trim($fila['metodo_pago'])) === 'efectivo') {
+            $total_efectivo += (float)$fila['total_venta'];
         }
     }
 }
 
-// Calcular producto más vendido
+// === Calcular producto más vendido ===
 $sql_mas_vendido = "SELECT descripcion AS producto, COUNT(*) AS cantidad
                     FROM ventas_productos
                     WHERE " . ($filtro == 'mensual' 
@@ -53,71 +53,127 @@ $sql_mas_vendido = "SELECT descripcion AS producto, COUNT(*) AS cantidad
                     LIMIT 1";
 $mas_vendido = $conn->query($sql_mas_vendido)->fetch_assoc();
 
-$resultado = $conn->query($sql); // volver a ejecutar para generar la tabla
+// Volver a ejecutar la consulta principal para generar tabla
+$resultado = $conn->query($sql);
 
-// --- HTML DEL REPORTE ---
+// === HTML DEL PDF ===
 ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Reporte de Ventas <?= ucfirst($filtro) ?></title>
+<title>Reporte de Ventas <?= ucfirst(htmlspecialchars($filtro)) ?></title>
 <style>
-body { font-family: 'DejaVu Sans', sans-serif; font-size: 12px; margin: 20px; color: #333; }
-h1 { text-align: center; color: #0d1b4c; }
-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-th, td { border: 1px solid #555; padding: 6px; text-align: center; }
-th { background-color: #0d1b4c; color: white; }
-.logo { text-align: center; margin-bottom: 10px; }
-.resumen { margin-top: 15px; background: #f4f4f4; padding: 10px; border-radius: 6px; }
-footer { text-align: center; font-size: 10px; color: #777; margin-top: 20px; }
+body {
+  font-family: 'DejaVu Sans', sans-serif;
+  font-size: 12px;
+  color: #333;
+  margin: 20px;
+  background-color: #fff;
+}
+
+h1 {
+  text-align: center;
+  color: #0d1b4c;
+  margin-bottom: 10px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.logo img {
+  width: 90px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  border: 1px solid #999;
+  padding: 6px;
+  text-align: center;
+}
+
+thead th {
+  background-color: #0d1b4c;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f4fa;
+}
+
+.resumen {
+  margin-top: 20px;
+  background: #eef1f8;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.resumen p {
+  margin: 5px 0;
+}
+
+footer {
+  text-align: center;
+  font-size: 10px;
+  color: #555;
+  margin-top: 25px;
+  border-top: 1px solid #ccc;
+  padding-top: 5px;
+}
 </style>
 </head>
 <body>
 
 <div class="logo">
-  <img src="logo.png" width="100"><br>
+  <img src="logo.png" alt="Logo">
   <h1>📊 Reporte de Ventas <?= ucfirst($filtro) ?></h1>
 </div>
 
 <?php if ($resultado && $resultado->num_rows > 0): ?>
-<table>
-  <thead>
-    <tr>
-      <th>ID Venta</th>
-      <th>Producto</th>
-      <th>Cliente</th>
-      <th>Total Venta</th>
-      <th>Método de Pago</th>
-      <th>Fecha Venta</th>
-    </tr>
-  </thead>
-  <tbody>
-  <?php while ($fila = $resultado->fetch_assoc()): ?>
-    <tr>
-      <td><?= $fila['id_venta'] ?></td>
-      <td><?= htmlspecialchars($fila['producto'], ENT_QUOTES, 'UTF-8') ?></td>
-      <td><?= htmlspecialchars($fila['cliente'], ENT_QUOTES, 'UTF-8') ?></td>
-      <td>$<?= number_format($fila['total_venta'], 2) ?></td>
-      <td><?= htmlspecialchars($fila['metodo_pago'], ENT_QUOTES, 'UTF-8') ?></td>
-      <td><?= $fila['fecha_venta'] ?></td>
-    </tr>
-  <?php endwhile; ?>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Venta</th>
+        <th>Producto</th>
+        <th>Cliente</th>
+        <th>Total Venta</th>
+        <th>Método de Pago</th>
+        <th>Fecha Venta</th>
+      </tr>
+    </thead>
+    <tbody>
+    <?php while ($fila = $resultado->fetch_assoc()): ?>
+      <tr>
+        <td><?= htmlspecialchars($fila['id_venta']) ?></td>
+        <td><?= htmlspecialchars($fila['producto']) ?></td>
+        <td><?= htmlspecialchars($fila['cliente']) ?></td>
+        <td>$<?= number_format($fila['total_venta'], 2) ?></td>
+        <td><?= htmlspecialchars($fila['metodo_pago']) ?></td>
+        <td><?= htmlspecialchars($fila['fecha_venta']) ?></td>
+      </tr>
+    <?php endwhile; ?>
+    </tbody>
+  </table>
 
-<div class="resumen">
-  <p><strong>Total de Ventas en Efectivo:</strong> $<?= number_format($total_efectivo, 2) ?></p>
-  <p><strong>Producto Más Vendido:</strong> <?= htmlspecialchars($mas_vendido['producto'] ?? 'N/A', ENT_QUOTES, 'UTF-8') ?></p>
-</div>
+  <div class="resumen">
+    <p><strong>Total en efectivo:</strong> $<?= number_format($total_efectivo, 2) ?></p>
+    <p><strong>Producto más vendido:</strong> <?= htmlspecialchars($mas_vendido['producto'] ?? 'N/A') ?></p>
+  </div>
 
 <?php else: ?>
   <p style="text-align:center; color:#777;">No se encontraron ventas registradas.</p>
 <?php endif; ?>
 
 <footer>
-  <p>Generado automáticamente por el Sistema de Almacén - <?= date("d/m/Y H:i") ?></p>
+  <p>Sistema de Almacén — Reporte <?= ucfirst($filtro) ?> | Generado el <?= date("d/m/Y H:i") ?></p>
 </footer>
 
 </body>
@@ -125,7 +181,7 @@ footer { text-align: center; font-size: 10px; color: #777; margin-top: 20px; }
 <?php
 $html = ob_get_clean();
 
-// Crear el PDF
+// === Generar PDF con Dompdf ===
 $dompdf = new Dompdf();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');

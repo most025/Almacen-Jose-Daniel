@@ -114,6 +114,7 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
         <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
         <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
         <a href="ventas.php"><span class="icon">💰</span> <span class="text">Ventas</span></a>
+        <a href="reporte_ventas.php" class="active"><span class="icon">📈</span> <span class="text">Reportes de Ventas</span></a>
       </nav>
     </aside>
 

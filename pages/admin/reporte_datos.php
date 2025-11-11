@@ -33,24 +33,36 @@ $resultado = $conn->query($sql);
 <title>Reporte de Ventas <?= ucfirst(htmlspecialchars($filtro)) ?></title>
 <link rel="icon" href="../../assets/img/logo.ico" type="image/x-icon">
 <style>
+
     body {
-        font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #0d1b4c, #020a1f);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
         background-color: #f4f6fa;
         color: #333;
-        margin: 20px;
+        margin: 0;
+        padding: 20px;
     }
 
-    h5 {
+    h1 {
+        text-align: center;
         color: #0d1b4c;
-        margin-bottom: 10px;
+        margin-bottom: 25px;
+        font-size: 24px;
     }
 
     .table-wrapper {
         overflow-x: auto;
         background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        padding: 15px;
     }
 
     table {
@@ -83,11 +95,12 @@ $resultado = $conn->query($sql);
         color: white;
         border: none;
         padding: 6px 12px;
-        border-radius: 5px;
+        border-radius: 6px;
         font-size: 13px;
         cursor: pointer;
         text-decoration: none;
         transition: 0.3s;
+        display: inline-block;
     }
 
     .btn-ticket:hover {
@@ -95,11 +108,18 @@ $resultado = $conn->query($sql);
     }
 
     .resumen {
-        background-color: #e9ecef;
+        background-color: #f0f2f7;
         border-radius: 8px;
-        padding: 15px;
+        padding: 15px 20px;
         margin-top: 20px;
         line-height: 1.6;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .resumen h5 {
+        color: #0d1b4c;
+        margin-bottom: 10px;
+        font-size: 18px;
     }
 
     .resumen ul {
@@ -128,6 +148,8 @@ $resultado = $conn->query($sql);
         font-size: 12px;
         color: #777;
         margin-top: 30px;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
     }
 
     @media print {
@@ -137,6 +159,8 @@ $resultado = $conn->query($sql);
 </style>
 </head>
 <body>
+
+<h1>📈 Reporte de Ventas <?= ucfirst($filtro) ?></h1>
 
 <?php if ($resultado && $resultado->num_rows > 0): ?>
 
@@ -149,6 +173,7 @@ $resultado = $conn->query($sql);
           <th>Cliente</th>
           <th>Total Venta</th>
           <th>Método de Pago</th>
+          <th>Fecha Venta</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -157,6 +182,7 @@ $resultado = $conn->query($sql);
       $totalEfectivo = 0;
       $totalTransferencia = 0;
 
+      $resultado->data_seek(0);
       while ($fila = $resultado->fetch_assoc()):
           $total = (float)$fila['total_venta'];
           $metodo = strtolower(trim($fila['metodo_pago'] ?? ''));
@@ -172,7 +198,8 @@ $resultado = $conn->query($sql);
           <td><?= htmlspecialchars($fila['producto']) ?></td>
           <td><?= htmlspecialchars($fila['cliente']) ?></td>
           <td><strong>$<?= number_format($total, 2) ?></strong></td>
-          <td><?= htmlspecialchars($fila['metodo_pago']) ?></td>
+          <td><?= htmlspecialchars(ucfirst($fila['metodo_pago'])) ?></td>
+          <td><?= htmlspecialchars($fila['fecha_venta']) ?></td>
           <td>
               <a href="generar_ticket.php?id_venta=<?= urlencode($fila['id_venta']) ?>" class="btn-ticket">🎟️ Ticket</a>
           </td>
@@ -203,4 +230,5 @@ $resultado = $conn->query($sql);
 </html>
 
 <?php $conn->close(); ?>
+
 

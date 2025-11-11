@@ -1,199 +1,127 @@
 <?php
-// ===============================
-// Conexión base de datos
-// ===============================
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "almacen_jose_daniel";
-
-$conn = new mysqli($host, $user, $password, $dbname);
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
+include('../../config/conexion.php');
+$sql = "SELECT * FROM proveedores";
+$ejecucionDeConsulta = mysqli_query($conexion, $sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Ventas</title>
     <link rel="stylesheet" href="../../assets/css/styles.css">
-    <script src="../../assets/js/script.js"></script>
     <link rel="shortcut icon" href="../../assets/img/logo.ico" type="image/x-icon">
+    <script src="../../assets/js/script.js"></script>
     <script src="../../dependencias/sweetalert2@11.js"></script>
-    <script src="../../assets/js/alerta.js"></script>
 
     <style>
-        /* ======== Estilos generales ======== */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6fa;
-            margin: 0;
-            padding: 0;
-        }
-
-        .wrapper {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 220px;
-            padding: 20px;
-            background: #0d1b4c;
-            color: #fff;
-        }
-
-        .sidebar a {
-            display: block;
-            margin: 10px 0;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .sidebar a:hover {
-            text-decoration: underline;
-        }
-
-        .main {
-            flex: 1;
-            padding: 20px;
-            background: #f4f6fa;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .header .title {
-            color: #0d1b4c;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background-color: #0d1b4c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        .btn-primary:hover {
-            background-color: #162c6a;
-        }
-
-        /* ======== Botones de reporte ======== */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            background-color: #0d1b4c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .tab-btn:hover {
-            background-color: #162c6a;
-        }
-
-        .tab-btn.active {
-            background-color: #0078d4;
-        }
-
-        /* ======== Modal estilo proveedores ======== */
         .modal-reporte {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 10;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0,0,0,0.4);
         }
 
         .modal-contenido {
             background-color: #fff;
             margin: 5% auto;
             padding: 20px;
-            border: 1px solid #888;
+            border-radius: 10px;
             width: 80%;
             max-width: 900px;
-            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            animation: aparecer 0.3s ease;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0d1b4c;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #0d1b4c;
+            margin-bottom: 10px;
+        }
+
+        .modal-header h5 {
+            color: #0d1b4c;
+            margin: 0;
+        }
+
+        .cerrar {
+            color: #888;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cerrar:hover {
+            color: black;
         }
 
         .modal-footer {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+            padding-top: 10px;
+        }
+
+        .btn-info, .btn-secondary {
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
         }
 
         .btn-info {
-            background-color: #0078d4;
+            background-color: #0d6efd;
             color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
         }
 
         .btn-info:hover {
-            background-color: #005fa3;
+            background-color: #084298;
         }
 
         .btn-secondary {
-            background-color: #555;
+            background-color: #6c757d;
             color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
         }
 
         .btn-secondary:hover {
-            background-color: #333;
+            background-color: #565e64;
         }
 
-        .cerrar {
-            color: #fff;
-            font-size: 22px;
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #0d1b4c;
+            color: white;
+            border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        .cerrar:hover {
-            color: #ccc;
-        }
-
-        #contenidoReporte {
-            padding: 15px;
+        .tab-btn.active, .tab-btn:hover {
+            background-color: #1a2b7e;
         }
 
         .text-center {
@@ -205,35 +133,45 @@ if ($conn->connect_error) {
         }
 
         .text-danger {
-            color: #d9534f;
+            color: #c0392b;
         }
     </style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">
-                <img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100">
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100">
+        </div>
+        <nav>
+            <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
+            <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
+            <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
+            <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
+            <a href="ventas.php"><span class="icon">💰</span> <span class="text">Ventas</span></a>
+            <a href="reporte_ventas.php" class="active"><span class="icon">📈</span> <span class="text">Reportes de Ventas</span></a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📊 Reporte de Ventas</h1>
+            <div class="icons">
+                <button class="btn-primary">
+                    <a id="botonCerrar">Cerrar Sesión</a>
+                </button>
+                <script src="../../assets/js/alerta.js"></script>
             </div>
-            <nav>
-                <a href="dashboard.php">🏠 Inicio</a>
-                <a href="proveedores.php">📦 Proveedores</a>
-                <a href="ingresar_producto.php">🛠️ Administrar Artículos</a>
-                <a href="clientes.php">👥 Clientes</a>
-                <a href="ventas.php">💰 Ventas</a>
-            </nav>
-        </aside>
+        </header>
 
-        <!-- Contenido principal -->
-        <div class="main">
-            <header class="header">
-                <h1 class="title">Reporte de Ventas</h1>
-                <button class="btn-primary" id="botonCerrar">Cerrar Sesión</button>
-            </header>
-
-            <!-- Botones de filtro -->
+        <!-- Content -->
+        <div class="content">
             <div class="tabs">
                 <button class="tab-btn active" onclick="cargarReporte('diario')">📅 Diario</button>
                 <button class="tab-btn" onclick="cargarReporte('mensual')">🗓️ Mensual</button>
@@ -246,9 +184,11 @@ if ($conn->connect_error) {
                         <h5 id="tituloReporte">Reporte</h5>
                         <span class="cerrar" onclick="cerrarModal()">&times;</span>
                     </div>
+
                     <div id="contenidoReporte">
                         <p class="text-center text-muted">Selecciona un reporte para visualizarlo.</p>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn-info" id="btnImprimir">🖨️ Imprimir</button>
                         <button class="btn-secondary" onclick="cerrarModal()">Cerrar</button>
@@ -257,65 +197,65 @@ if ($conn->connect_error) {
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Script funcional -->
-    <script>
-        const modal = document.getElementById("reporteModal");
-        const contenido = document.getElementById("contenidoReporte");
+<!-- Script funcional -->
+<script>
+    const modal = document.getElementById("reporteModal");
+    const contenido = document.getElementById("contenidoReporte");
 
-        function cargarReporte(filtro) {
-            document.getElementById("tituloReporte").innerText =
-                `Reporte de Ventas (${filtro.charAt(0).toUpperCase() + filtro.slice(1)})`;
-            contenido.innerHTML = "<p class='text-center text-muted'>Cargando reporte...</p>";
+    function cargarReporte(filtro) {
+        document.getElementById("tituloReporte").innerText =
+            `Reporte de Ventas (${filtro.charAt(0).toUpperCase() + filtro.slice(1)})`;
+        contenido.innerHTML = "<p class='text-center text-muted'>Cargando reporte...</p>";
 
-            fetch(`reporte_datos.php?filtro=${filtro}`)
-                .then(res => res.text())
-                .then(data => {
-                    contenido.innerHTML = data;
-                    abrirModal();
-                })
-                .catch(() => {
-                    contenido.innerHTML = "<p class='text-danger text-center'>Error al cargar los datos.</p>";
-                });
-        }
+        fetch(`reporte_datos.php?filtro=${filtro}`)
+            .then(res => res.text())
+            .then(data => {
+                contenido.innerHTML = data;
+                abrirModal();
+            })
+            .catch(() => {
+                contenido.innerHTML = "<p class='text-danger text-center'>Error al cargar los datos.</p>";
+            });
+    }
 
-        function abrirModal() {
-            modal.style.display = "block";
-        }
+    function abrirModal() {
+        modal.style.display = "block";
+    }
 
-        function cerrarModal() {
-            modal.style.display = "none";
-        }
+    function cerrarModal() {
+        modal.style.display = "none";
+    }
 
-        window.onclick = function (event) {
-            if (event.target === modal) cerrarModal();
-        };
+    window.onclick = function (event) {
+        if (event.target === modal) cerrarModal();
+    };
 
-        document.getElementById('btnImprimir').addEventListener('click', () => {
-            const contenido = document.getElementById('contenidoReporte').innerHTML;
-            const ventana = window.open('', '_blank');
-            ventana.document.write(`
-                <html>
-                <head>
-                    <title>Imprimir Reporte</title>
-                    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.ico">
-                </head>
-                <body style="font-family: Arial; padding: 20px;">
-                    <div style="text-align:center;">
-                        <img src="../../assets/img/logo.ico" alt="Logo" width="80">
-                        <h2>📋 Reporte de Ventas</h2>
-                        <p><strong>Fecha y Hora:</strong> ${new Date().toLocaleString()}</p>
-                    </div>
-                    ${contenido}
-                </body>
-                </html>
-            `);
-            ventana.document.close();
-            ventana.print();
-        });
-    </script>
+    document.getElementById('btnImprimir').addEventListener('click', () => {
+        const contenido = document.getElementById('contenidoReporte').innerHTML;
+        const ventana = window.open('', '_blank');
+        ventana.document.write(`
+            <html>
+            <head>
+                <title>Imprimir Reporte</title>
+                <link rel="icon" type="image/x-icon" href="../../assets/img/logo.ico">
+            </head>
+            <body style="font-family: Arial; padding: 20px;">
+                <div style="text-align:center;">
+                    <img src="../../assets/img/logo.ico" alt="Logo" width="80">
+                    <h2>📋 Reporte de Ventas</h2>
+                    <p><strong>Fecha y Hora:</strong> ${new Date().toLocaleString()}</p>
+                </div>
+                ${contenido}
+            </body>
+            </html>
+        `);
+        ventana.document.close();
+        ventana.print();
+    });
+</script>
 
 </body>
-
 </html>
 

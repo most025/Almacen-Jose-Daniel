@@ -13,11 +13,10 @@ if (!isset($_GET['id'])) {
 $id_carga = intval($_GET['id']);
 
 // Obtener los datos del producto y su inventario
-$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.descripcion, cp.categoria,
-               cp.precio_compra, cp.precio_venta, ip.stockDisponible
-        FROM carga_productos cp
-        LEFT JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
-        WHERE cp.id_carga = $id_carga";
+$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.descripcion, c.nombre_categoria AS categorias, cp.precio_compra, cp.precio_venta, ip.stockDisponible
+                                    FROM carga_productos cp  INNER JOIN categoria c ON cp.id_categoria = c.id_categoria
+                                    INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
+                                    WHERE cp.id_carga = $id_carga";
 $result = $conn->query($sql);
 
 if ($result->num_rows === 0) {
@@ -37,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   // Actualizar carga_productos
   $sql1 = "UPDATE carga_productos 
-           SET nombre_producto='$nombre', descripcion='$descripcion', categoria='$categoria', 
+           SET nombre_producto='$nombre', descripcion='$descripcion', id_categoria='$categoria', 
                precio_compra='$precio_compra', precio_venta='$precio_venta'
            WHERE id_carga = $id_carga";
 
@@ -93,7 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="mb-3">
         <label class="form-label">Categoría</label>
-        <input type="text" name="categoria" class="form-control" value="<?= $producto['categoria'] ?>" required>
+        <select name="categoria" id="" class="form-select" required>
+          <option value="" disabled selected >Seleccione una categoría</option>
+          <?php
+          $consulta = "SELECT id_categoria, nombre_categoria FROM categoria";
+          $resultado = $conn->query($consulta);
+          while ($row = $resultado->fetch_assoc()) {
+              $selected = ($row['id_categoria'] == $producto['id_categoria']) ? 'selected' : '';
+              echo "<option value=\"{$row['id_categoria']}\" $selected>{$row['nombre_categoria']}</option>";
+          }
+          ?>
+        </select>
       </div>
 
       <div class="row">
@@ -113,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <div class="d-flex justify-content-between">
-        <a href="ventas.php" class="btn btn-secondary">⬅️ Volver</a>
+        <a href="ingresar_producto.php" class="btn btn-secondary">⬅️ Volver</a>
         <button type="submit" class="btn btn-success">💾 Guardar</button>
       </div>
     </form>

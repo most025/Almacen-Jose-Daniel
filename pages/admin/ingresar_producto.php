@@ -27,6 +27,7 @@ if (isset($_GET['eliminar'])) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,6 +50,7 @@ if (isset($_GET['eliminar'])) {
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
         }
+
         .modal-contenido-proveedor {
             background-color: #fefefe;
             margin: 10% auto;
@@ -58,23 +60,28 @@ if (isset($_GET['eliminar'])) {
             border-radius: 10px;
             max-width: 600px;
         }
+
         .cerrar {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
-        .cerrar:hover, .cerrar:focus {
+
+        .cerrar:hover,
+        .cerrar:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
         }
+
         .form-proveedor {
             display: flex;
             flex-direction: column;
             gap: 10px;
             padding: 10px;
         }
+
         .form-proveedor input,
         .form-proveedor select,
         .form-proveedor textarea {
@@ -85,56 +92,115 @@ if (isset($_GET['eliminar'])) {
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .tabla-encabezado {
             background-color: #0d1b4c;
             color: white;
         }
+
         .tabla {
             width: 100%;
             border-collapse: collapse;
         }
-        .tabla th, .tabla td {
+
+        .tabla th,
+        .tabla td {
             padding: 10px;
             border-bottom: 1px solid #ddd;
             text-align: left;
         }
+
         .tabla tr:hover {
             background-color: #f1f1f1;
         }
-        .btn-primary, .btn-secondary {
+
+        .btn-primary,
+        .btn-secondary {
             cursor: pointer;
             border: none;
             padding: 8px 12px;
             border-radius: 5px;
             color: white;
         }
+
         /* .btn-primary {
             background-color: #0d1b4c;
         } */
         .btn-secondary {
             background-color: #888;
         }
+
         /* .btn-primary:hover {
             background-color: #142a6e;
         } */
         .btn-secondary:hover {
             background-color: #666;
         }
+
         p {
             margin: 0;
             font-weight: bold;
             color: black;
             font-size: 11px;
         }
-        #boton-secundario{
+
+        #boton-secundario {
             background-color: #FFE797;
         }
-        #boton-secundario:hover{
+
+        #boton-secundario:hover {
             background-color: #FFD966;
         }
+
         #link-categorias {
             text-decoration: none;
             color: #37353E;
+            font-weight: bold;
+        }
+
+        .modal-editar-producto {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-contenido-editar-producto {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            border-radius: 10px;
+            max-width: 500px;
+        }
+
+        .form-Producto {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .form-Producto input,
+        .form-Producto select {
+            display: inline;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .cerrarEditarProductos {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
             font-weight: bold;
         }
     </style>
@@ -213,11 +279,42 @@ if (isset($_GET['eliminar'])) {
                             </form>
                         </div>
                     </div>
+                    <div id="editarProducto" class="modal-editar-producto">
+                        <div class="modal-contenido-editar-producto">
+                            <span class="cerrarEditarProductos" onclick="cerrarModalEditar()">&times;</span>
+                            <h2>Editar Producto</h2>
+                            <form class="form-Producto" action="../../procesos/editar_productos.php" method="POST">
+                                <input type="hidden" id="id_producto" name="id_carga">
+
+                                <input type="text" id="nombre_edit" name="nombre_producto" placeholder="Nombre del Producto" required>
+                                <textarea id="descripcion_edit" name="descripcion" placeholder="Descripción del Producto" required></textarea>
+
+                                <select name="categoria" id="categoria_edit" required>
+                                    <option value="" disabled selected>Seleccione una categoría</option>
+                                    <?php
+                                    $consulta = "SELECT id_categoria, nombre_categoria FROM categoria";
+                                    $resultado = $conn->query($consulta);
+                                    while ($row = $resultado->fetch_assoc()) {
+                                        echo "<option value='{$row['id_categoria']}'>{$row['nombre_categoria']}</option>";
+                                    }
+                                    ?>
+                                </select>
+
+                                <input type="number" id="precio_compra_edit" name="precio_compra" placeholder="Precio de Compra" step="0.01" min="0" required>
+                                <input type="number" id="precio_venta_edit" name="precio_venta" placeholder="Precio de Venta" step="0.01" min="0" required>
+                                <input type="number" id="stock_edit" name="stockDisponible" placeholder="Stock Disponible" min="0" required>
+
+                                <button class="btn-primary" type="submit">Guardar Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+
 
                     <script>
                         function abrirModalProveedor() {
                             document.getElementById("agregarProveedor").style.display = "block";
                         }
+
                         function cerrarModalProveedor() {
                             document.getElementById("agregarProveedor").style.display = "none";
                             document.querySelector("body").style.overflow = "auto";
@@ -228,10 +325,25 @@ if (isset($_GET['eliminar'])) {
                                 modal.style.display = "none";
                             }
                         }
+
+                        function abrirModalEditar(id, nombre, descripcion, id_categoria, categoria, precio_compra, precio_venta, stock) {
+                            document.getElementById("editarProducto").style.display = "block";
+                            document.getElementById("id_producto").value = id;
+                            document.getElementById("nombre_edit").value = nombre;
+                            document.getElementById("descripcion_edit").value = descripcion;
+                            document.getElementById("categoria_edit").value = id_categoria;
+                            document.getElementById("precio_compra_edit").value = precio_compra;
+                            document.getElementById("precio_venta_edit").value = precio_venta;
+                            document.getElementById("stock_edit").value = stock;
+                        }
+
+                        function cerrarModalEditar() {
+                            document.getElementById("editarProducto").style.display = "none";
+                        }
                     </script>
 
                     <!-- Tabla -->
-                     
+
                     <table class="tabla">
                         <thead class="tabla-encabezado">
                             <tr>
@@ -244,9 +356,9 @@ if (isset($_GET['eliminar'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             <?php
-                            $sql = "SELECT cp.id_carga, cp.nombre_producto, c.nombre_categoria, cp.precio_compra, cp.precio_venta, ip.stockDisponible
+                            $sql = "SELECT cp.id_carga, cp.nombre_producto,cp.descripcion,c.id_categoria, c.nombre_categoria AS categorias, cp.precio_compra, cp.precio_venta, ip.stockDisponible
                                     FROM carga_productos cp  INNER JOIN categoria c ON cp.id_categoria = c.id_categoria
                                     INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
                                     ORDER BY cp.id_carga DESC";
@@ -257,13 +369,14 @@ if (isset($_GET['eliminar'])) {
                                     $nombre = htmlspecialchars($producto['nombre_producto']);
                                     echo "<tr>
                                             <td>{$nombre}</td>
-                                            <td>{$producto['nombre_categoria']}</td>
+                                            <td>{$producto['categorias']}</td>
                                             <td>\${$producto['precio_compra']}</td>
                                             <td>\${$producto['precio_venta']}</td>
                                             <td>{$producto['stockDisponible']}</td>
                                             <td>
-                                                <button class='btn-secondary' onclick=\"window.location.href='editar_producto.php?id={$producto['id_carga']}'\">Editar</button>
-                                                
+                                                <button class='btn-secondary' onclick=\"abrirModalEditar('{$producto['id_carga']}', '{$nombre}', '{$producto['descripcion']}',  '{$producto['id_categoria']}','{$producto['categorias']}', '{$producto['precio_compra']}', '{$producto['precio_venta']}', '{$producto['stockDisponible']}')\">Editar</button>
+                                            </td>
+
                                             </td>
                                           </tr>";
                                 }
@@ -279,6 +392,5 @@ if (isset($_GET['eliminar'])) {
         </div>
     </div>
 </body>
+
 </html>
-
-

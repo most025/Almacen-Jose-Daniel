@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-11-2025 a las 21:58:41
+-- Tiempo de generación: 13-11-2025 a las 13:32:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -42,9 +42,10 @@ CREATE TABLE `carga_productos` (
 --
 
 INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_compra`, `precio_venta`, `fecha_carga`) VALUES
-(1, 'leche ilolay', 'leche de segunda marca', 1, 200.99, 400.99, NULL),
-(2, 'la serenisima', 'la mas natural', 1, 1200.99, 3200.00, NULL),
-(3, 'Arroz Integral 0000-Tio carlos', 'Paquete de arroz integral', 2, 2972.99, 5500.99, NULL);
+(1, 'Leche ilolay', 'Leche de segunda marca.', 1, 250.99, 450.99, NULL),
+(2, 'La Serenicima', 'La más natural', 1, 1200.99, 3200.00, NULL),
+(3, 'Arroz Integral 0000-Tio Carlos.', 'Paquete de arroz integral.', 2, 2973.99, 7550.99, NULL),
+(4, 'Leche en polvo', 'aaaa', 1, 500.00, 1500.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,7 @@ CREATE TABLE `categoria` (
 
 INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
 (1, 'Lacteos', 'todos los lacteos.'),
-(2, 'Cereal', 'Alimentos a base hidratos de carbonos y proteínas.');
+(2, 'Cereales', 'Alimentos a base hidratos de carbonos y proteínas.');
 
 -- --------------------------------------------------------
 
@@ -107,9 +108,10 @@ CREATE TABLE `inventario_productos` (
 --
 
 INSERT INTO `inventario_productos` (`id_inventario`, `id_carga`, `stockDisponible`, `fecha_actualizacion`) VALUES
-(1, 1, 12, NULL),
-(2, 2, 300, NULL),
-(3, 3, 500, NULL);
+(1, 1, 19, NULL),
+(2, 2, 350, NULL),
+(3, 3, 504, NULL),
+(4, 4, 70, NULL);
 
 -- --------------------------------------------------------
 
@@ -203,6 +205,13 @@ CREATE TABLE `ventas_productos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `ventas_productos`
+--
+
+INSERT INTO `ventas_productos` (`id_venta`, `cliente`, `descripcion`, `total_venta`, `fecha_venta`, `metodo_pago`, `id_cliente`) VALUES
+(1, 'jorge sanchez', 'leche ilolay x1', 400.99, '2025-11-11 00:00:00', 'Transferencia', NULL);
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -273,7 +282,7 @@ ALTER TABLE `ventas_productos`
 -- AUTO_INCREMENT de la tabla `carga_productos`
 --
 ALTER TABLE `carga_productos`
-  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
@@ -291,7 +300,7 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `inventario_productos`
 --
 ALTER TABLE `inventario_productos`
-  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `ofertas_productos`
@@ -321,7 +330,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas_productos`
 --
 ALTER TABLE `ventas_productos`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

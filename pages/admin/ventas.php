@@ -1,5 +1,5 @@
 <?php
-// ventas.php - versión adaptada sin Bootstrap, estilo coherente con proveedores.php e ingresar_producto.php
+// ventas.php - versión adaptada sin Bootstrap, coherente con proveedores.php e ingresar_producto.php
 
 // Conexión a la base de datos
 $conn = new mysqli("localhost", "root", "", "almacen_jose_daniel");
@@ -15,7 +15,7 @@ $sql = "SELECT cp.id_carga, cp.nombre_producto, cp.precio_venta, ip.stockDisponi
         ORDER BY cp.nombre_producto ASC";
 $result = $conn->query($sql);
 if ($result === false) {
-    error_log("Error SQL: " . $conn->error);
+    error_log('Error SQL: ' . $conn->error);
     $result = null;
 }
 ?>
@@ -61,7 +61,7 @@ if ($result === false) {
             margin-bottom: 10px;
         }
 
-        input[type="text"], select, .cantidad {
+        input[type="text"], input[type="number"], select, .cantidad {
             width: 100%;
             padding: 8px;
             border: 1px solid #bbb;
@@ -102,11 +102,9 @@ if ($result === false) {
             text-align: center;
         }
 
-        /* .btn-primary { background-color: #0d1b4c; } */
         .btn-secondary { background-color: #888; }
         .btn-success { background-color: #1c56ca; }
 
-        /* .btn-primary:hover { background-color: #e66e1d; } */
         .btn-success:hover { background-color: #2a64d1; }
 
         .lista {
@@ -158,17 +156,18 @@ if ($result === false) {
 
 <body>
     <div class="container">
-
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo"><img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100"></div>
+            <div class="logo">
+                <img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100">
+            </div>
             <nav>
                 <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
                 <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
                 <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
                 <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
-                <a href="ventas.php"><span class="icon">💰</span> <span class="text">Ventas</span></a>
-                <a href="reporte_ventas.php" class="active"><span class="icon">📈</span> <span class="text">Reportes de Ventas</span></a>
+                <a href="ventas.php" class="active"><span class="icon">💰</span> <span class="text">Ventas</span></a>
+                <a href="reporte_ventas.php"><span class="icon">📈</span> <span class="text">Reportes de Ventas</span></a>
             </nav>
         </aside>
 
@@ -188,7 +187,6 @@ if ($result === false) {
                 <div class="tabs">
                     <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
                     <button class="tab-btn active" onclick="window.location.href='reporte_ventas.php'">Reportes y Ventas</button>
-                    
                 </div>
 
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
@@ -245,6 +243,9 @@ if ($result === false) {
                             <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
                                 <p>Nombre del Cliente</p>
                                 <input type="text" name="cliente" required>
+
+                                <p>DNI del Cliente</p>
+                                <input type="number" name="dni" required placeholder="Ingrese el DNI">
 
                                 <p>Método de Pago</p>
                                 <select name="metodo_pago" required>
@@ -347,4 +348,5 @@ if ($result === false) {
 </html>
 
 <?php $conn->close(); ?>
+
 

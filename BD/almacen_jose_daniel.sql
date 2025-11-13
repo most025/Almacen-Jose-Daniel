@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-11-2025 a las 13:32:06
+-- Tiempo de generación: 13-11-2025 a las 21:19:00
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,18 +34,21 @@ CREATE TABLE `carga_productos` (
   `id_categoria` int(11) DEFAULT NULL,
   `precio_compra` decimal(10,2) DEFAULT NULL,
   `precio_venta` decimal(10,2) DEFAULT NULL,
-  `fecha_carga` datetime DEFAULT NULL
+  `fecha_carga` datetime DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `carga_productos`
 --
 
-INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_compra`, `precio_venta`, `fecha_carga`) VALUES
-(1, 'Leche ilolay', 'Leche de segunda marca.', 1, 250.99, 450.99, NULL),
-(2, 'La Serenicima', 'La más natural', 1, 1200.99, 3200.00, NULL),
-(3, 'Arroz Integral 0000-Tio Carlos.', 'Paquete de arroz integral.', 2, 2973.99, 7550.99, NULL),
-(4, 'Leche en polvo', 'aaaa', 1, 500.00, 1500.00, NULL);
+INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_compra`, `precio_venta`, `fecha_carga`, `estado`) VALUES
+(1, 'Leche ilolay', 'Leche de segunda marca.', 1, 250.99, 450.99, NULL, 'Inactivo'),
+(2, 'La Serenicima', 'La más natural', 1, 1200.99, 3200.00, NULL, 'Activo'),
+(3, 'Arroz Integral 0000-Tio Carlos.', 'Paquete de arroz integral.', 2, 2973.99, 7550.99, NULL, 'Inactivo'),
+(4, 'Leche en polvo', 'aaaa', 1, 500.00, 1500.00, NULL, 'Inactivo'),
+(5, 'Arroz doña nona', 'alimento para toda la familia', 3, 800.99, 2800.99, NULL, 'Activo'),
+(6, 'yogur La Serenicima', 'Sabor frutilla', 1, 800.00, 30800.00, NULL, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -56,16 +59,18 @@ INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id
 CREATE TABLE `categoria` (
   `id_categoria` int(11) NOT NULL,
   `nombre_categoria` varchar(100) DEFAULT NULL,
-  `descripcion` varchar(100) DEFAULT NULL
+  `descripcion` varchar(100) DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `categoria`
 --
 
-INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
-(1, 'Lacteos', 'todos los lacteos.'),
-(2, 'Cereales', 'Alimentos a base hidratos de carbonos y proteínas.');
+INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`, `estado`) VALUES
+(1, 'Lacteos', 'todos los lacteos.', 'Activo'),
+(2, 'Cereales', 'Alimentos a base hidratos de carbonos y proteínas.', 'Activo'),
+(3, 'Alimentos', 'todos los alimentos', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -80,15 +85,16 @@ CREATE TABLE `clientes` (
   `dni` int(100) DEFAULT NULL,
   `direccion` varchar(100) DEFAULT NULL,
   `telefono` int(11) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL
+  `email` varchar(100) DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido`, `dni`, `direccion`, `telefono`, `email`) VALUES
-(1, 'jorge', 'sanchez', 40593079, 'cfcfct', 3444549, 'crrrrc@rryryry');
+INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido`, `dni`, `direccion`, `telefono`, `email`, `estado`) VALUES
+(1, 'jorge', 'sanchez', 40593079, 'calle falsa 103', 3444549, 'crrrrc@rryryry', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -108,10 +114,12 @@ CREATE TABLE `inventario_productos` (
 --
 
 INSERT INTO `inventario_productos` (`id_inventario`, `id_carga`, `stockDisponible`, `fecha_actualizacion`) VALUES
-(1, 1, 19, NULL),
+(1, 1, 20, NULL),
 (2, 2, 350, NULL),
 (3, 3, 504, NULL),
-(4, 4, 70, NULL);
+(4, 4, 70, NULL),
+(5, 5, 120, NULL),
+(6, 6, 130, NULL);
 
 -- --------------------------------------------------------
 
@@ -139,15 +147,16 @@ CREATE TABLE `proveedores` (
   `nombre_proveedor` varchar(100) DEFAULT NULL,
   `direccion` varchar(100) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL
+  `email` varchar(100) DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `proveedores`
 --
 
-INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `telefono`, `email`) VALUES
-(1, 'almacen sanchez', 'falsa 323 af', '3444549', 'almacensanchez@nhygygyg.com');
+INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `direccion`, `telefono`, `email`, `estado`) VALUES
+(1, 'almacen sanchez', 'falsa 323 af', '3444549', 'almacensanchez@nhygygyg.com', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -282,13 +291,13 @@ ALTER TABLE `ventas_productos`
 -- AUTO_INCREMENT de la tabla `carga_productos`
 --
 ALTER TABLE `carga_productos`
-  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -300,7 +309,7 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `inventario_productos`
 --
 ALTER TABLE `inventario_productos`
-  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ofertas_productos`

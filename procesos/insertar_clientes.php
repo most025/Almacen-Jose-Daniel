@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $direccion = $_POST['direccion'];
 
-    $sql = "INSERT INTO clientes (nombre, apellido, telefono, dni, email, direccion) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO clientes (nombre, apellido, telefono, dni, email, direccion,estado) VALUES (?, ?, ?, ?, ?, ?, 'Activo')";
     $consultaPreparada = mysqli_prepare($conexion, $sql);
 
     if ($consultaPreparada) {

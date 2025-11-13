@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
 
-    $sql = "INSERT INTO categoria (nombre_categoria, descripcion) VALUES (?, ?)";
+    $sql = "INSERT INTO categoria (nombre_categoria, descripcion,estado) VALUES (?, ?, 'Activo')";
     $consultaPreparada = mysqli_prepare($conexion, $sql);
 
     if ($consultaPreparada) {

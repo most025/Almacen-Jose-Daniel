@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
 
-    $sql = "INSERT INTO proveedores (nombre_proveedor, direccion, telefono, email) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO proveedores (nombre_proveedor, direccion, telefono, email, estado) VALUES (?, ?, ?, ?, 'Activo')";
     $consultaPreparada = mysqli_prepare($conexion, $sql);
 
     if ($consultaPreparada) {

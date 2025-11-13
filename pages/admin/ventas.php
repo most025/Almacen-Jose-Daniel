@@ -8,10 +8,10 @@ if ($conn->connect_error) {
 }
 
 // Consulta productos con stock > 0
-$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.precio_venta, ip.stockDisponible
+$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.precio_venta,cp.estado, ip.stockDisponible
         FROM carga_productos cp
         INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
-        WHERE ip.stockDisponible > 0
+        WHERE ip.stockDisponible > 0 and cp.estado = 'Activo'
         ORDER BY cp.nombre_producto ASC";
 $result = $conn->query($sql);
 if ($result === false) {

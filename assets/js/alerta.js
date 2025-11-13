@@ -49,21 +49,21 @@ function eliminarCategoria(id_categoria) {
   });
   
 }
-function eliminarCliente(id_cliente) {
-  Swal.fire({
-    title: "¿Estás Seguro?",
-    text: "Estás a punto de eliminar a este cliente",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Si, eliminar",
-    cancelButtonText: "Cancelar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      window.location.href="../../procesos/eliminar_cliente.php?id_cliente=" + id_cliente;
-    }
-  });
+// function eliminarCliente(id_cliente) {
+//   Swal.fire({
+//     title: "¿Estás Seguro?",
+//     text: "Estás a punto de eliminar a este cliente",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#3085d6",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Si, eliminar",
+//     cancelButtonText: "Cancelar",
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       window.location.href="../../procesos/eliminar_cliente.php?id_cliente=" + id_cliente;
+//     }
+//   });
   
-}
+// }
 

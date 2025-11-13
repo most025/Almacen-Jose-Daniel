@@ -220,6 +220,7 @@ if (isset($_GET['eliminar'])) {
                 <h1 class="title">Gestión de Productos</h1>
                 <div class="icons">
                     <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
+                    <script src="../../assets/js/alerta.js"></script>
                 </div>
             </header>
 
@@ -261,6 +262,67 @@ if (isset($_GET['eliminar'])) {
                             </form>
                         </div>
                     </div>
+                    <div id="editarProducto" class="modal-editar-producto">
+                        <div class="modal-contenido-editar-producto">
+                            <span class="cerrarEditarProductos" onclick="cerrarModalEditar()">&times;</span>
+                            <h2>Editar Producto</h2>
+                            <form class="form-Producto" action="../../procesos/editar_productos.php" method="POST">
+                                <input type="hidden" id="id_producto" name="id_carga">
+
+                                <input type="text" id="nombre_edit" name="nombre_producto" placeholder="Nombre del Producto" required>
+                                <textarea id="descripcion_edit" name="descripcion" placeholder="Descripción del Producto" required></textarea>
+
+                                <select name="categoria" id="categoria_edit" required>
+                                    <option value="" disabled selected>Seleccione una categoría</option>
+                                    <?php
+                                    $consulta = "SELECT id_categoria, nombre_categoria FROM categoria WHERE estado = 'Activo'";
+                                    $resultado = $conn->query($consulta);
+                                    while ($row = $resultado->fetch_assoc()) {
+                                        echo "<option value='{$row['id_categoria']}'>{$row['nombre_categoria']}</option>";
+                                    }
+                                    ?>
+                                </select>
+
+                                <input type="number" id="precio_compra_edit" name="precio_compra" placeholder="Precio de Compra" step="0.01" min="0" required>
+                                <input type="number" id="precio_venta_edit" name="precio_venta" placeholder="Precio de Venta" step="0.01" min="0" required>
+                                <input type="number" id="stock_edit" name="stockDisponible" placeholder="Stock Disponible" min="0" required>
+
+                                <button class="btn-primary" type="submit">Guardar Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <script>
+                         function abrirModalProveedor() {
+                            document.getElementById("agregarProveedor").style.display = "block";
+                        }
+
+                        function cerrarModalProveedor() {
+                            document.getElementById("agregarProveedor").style.display = "none";
+                            document.querySelector("body").style.overflow = "auto";
+                        }
+                        window.onclick = function(event) {
+                            var modal = document.getElementById("agregarProveedor");
+                            if (event.target == modal) {
+                                modal.style.display = "none";
+                            }
+                        }
+
+                        function abrirModalEditar(id, nombre, descripcion, id_categoria, categoria, precio_compra, precio_venta, stock) {
+                            document.getElementById("editarProducto").style.display = "block";
+                            document.getElementById("id_producto").value = id;
+                            document.getElementById("nombre_edit").value = nombre;
+                            document.getElementById("descripcion_edit").value = descripcion;
+                            document.getElementById("categoria_edit").value = id_categoria;
+                            document.getElementById("precio_compra_edit").value = precio_compra;
+                            document.getElementById("precio_venta_edit").value = precio_venta;
+                            document.getElementById("stock_edit").value = stock;
+                        }
+
+                        function cerrarModalEditar() {
+                            document.getElementById("editarProducto").style.display = "none";
+                        }
+                    </script>
 
                     <!-- Tabla -->
                     <table class="tabla">
@@ -281,7 +343,7 @@ if (isset($_GET['eliminar'])) {
                                     FROM carga_productos cp
                                     INNER JOIN categoria c ON cp.id_categoria = c.id_categoria
                                     INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
-                                    WHERE cp.estado = 'activo'
+                                    WHERE cp.estado = 'Activo'
                                     ORDER BY cp.id_carga DESC";
 
                             $result = $conn->query($sql);
@@ -295,7 +357,7 @@ if (isset($_GET['eliminar'])) {
                                             <td>\${$producto['precio_venta']}</td>
                                             <td>{$producto['stockDisponible']}</td>
                                             <td>
-                                                <button class='btn-secondary' onclick=\"abrirModalEditar('{$producto['id_carga']}', '{$producto['nombre_producto']}', '{$producto['descripcion']}', '{$producto['id_categoria']}', '{$producto['precio_compra']}', '{$producto['precio_venta']}', '{$producto['stockDisponible']}')\">Editar</button>
+                                             <button class='btn-secondary' onclick=\"abrirModalEditar('{$producto['id_carga']}', '{$producto['nombre_producto']}', '{$producto['descripcion']}',  '{$producto['id_categoria']}','{$producto['categorias']}', '{$producto['precio_compra']}', '{$producto['precio_venta']}', '{$producto['stockDisponible']}')\">Editar</button>
                                                 <a href='?eliminar={$producto['id_carga']}' onclick=\"return confirm('¿Seguro que quieres eliminar este producto?')\">
                                                     <button class='btn-eliminar'>Eliminar</button>
                                                 </a>

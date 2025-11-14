@@ -1,6 +1,6 @@
 <?php
 include('../../config/conexion.php');
-$sql = "SELECT * FROM clientes";
+$sql = "SELECT * FROM clientes WHERE estado = 'Activo'";
 $ejecucionDeConsulta = mysqli_query($conexion, $sql);
 ?>
 <!DOCTYPE html>
@@ -102,6 +102,22 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
     color: white;
   }
 </style>
+<script>
+  function eliminarCliente(id) {
+    Swal.fire({
+      title: "¿Eliminar cliente?",
+      text: "Este cliente pasará a estado INACTIVO",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "../../procesos/eliminar_cliente.php?id=" + id;
+      }
+    });
+  }
+</script>
 
 <body>
   <div class="container">
@@ -153,6 +169,7 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
           function abrirModalCliente() {
             document.getElementById("agregarCliente").style.display = "block";
           }
+
           function cerrarModalCliente() {
             document.getElementById("agregarCliente").style.display = "none";
           }
@@ -204,14 +221,28 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
                 <td>
                   <button class="btn-secondary"
                     onclick="abrirModalEditar(<?php echo $filas['id_cliente']; ?>, '<?php echo $filas['nombre']; ?>', '<?php echo $filas['apellido']; ?>', '<?php echo $filas['dni']; ?>', '<?php echo $filas['direccion']; ?>', '<?php echo $filas['email']; ?>', '<?php echo $filas['telefono']; ?>')">Editar</button>
-                  <!--<button class="btn-primary" onclick="eliminarCliente(<?php //echo $filas['id_cliente']; ?>)">Eliminar</button>-->
-                  <!-- <script src="../../assets/js/alerta.js"></script> -->
+                  <button class="btn-primary" onclick="eliminarCliente(<?php echo $filas['id_cliente']; ?>)">
+                    Eliminar
+                  </button>
+
                 </td>
               </tr>
             <?php } ?>
           </tbody>
         </table>
       </main>
+      <?php if (isset($_GET['msg']) && $_GET['msg'] == "eliminado") { ?>
+        <script>
+          Swal.fire({
+            title: "Cliente eliminado",
+            text: "El cliente ahora está marcado como INACTIVO",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        </script>
+      <?php } ?>
+
     </div>
   </div>
 
@@ -242,5 +273,3 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
 </body>
 
 </html>
-
-

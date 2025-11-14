@@ -1,15 +1,17 @@
 <?php
-require_once '../config/conexion.php';
+include('../config/conexion.php');
 
-if (isset($_GET['id_clientes'])) {
-    $id_clientes = $_GET['id_clientes'];
-    $sql = "DELETE FROM clientes WHERE id_clientes = ?";
-    $stmt = $conexion->prepare($sql);
-    if ($stmt) {
-        $stmt->bind_param("i", $id_clientes);
-        if ($stmt->execute()) {
-            header("Location: ../pages/admin/clientes.php");
-            exit();
-        }
+if (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+
+    $sql = "UPDATE clientes SET estado = 'Inactivo' WHERE id_cliente = $id";
+
+    if (mysqli_query($conexion, $sql)) {
+        header("Location: ../pages/admin/clientes.php?msg=eliminado");
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($conexion);
     }
 }
+
+mysqli_close($conexion);

@@ -244,8 +244,8 @@ if ($result === false) {
                                 <p>Nombre del Cliente</p>
                                 <input type="text" name="cliente" required>
 
-                                <p>DNI del Cliente</p>
-                                <input type="number" name="dni" required placeholder="Ingrese el DNI">
+                                <!-- <p>DNI del Cliente</p>
+                                <input type="number" name="dni" required placeholder="Ingrese el DNI"> -->
 
                                 <p>Método de Pago</p>
                                 <select name="metodo_pago" required>

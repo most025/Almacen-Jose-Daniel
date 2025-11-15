@@ -1,15 +1,17 @@
 <?php
-require_once '../config/conexion.php';
+include('../config/conexion.php');
 
-if (isset($_GET['id_proveedor'])) {
-    $id_proveedor = $_GET['id_proveedor'];
-    $sql = "DELETE FROM proveedores WHERE id_proveedor = ?";
-    $stmt = $conexion->prepare($sql);   
-    if ($stmt) {
-        $stmt->bind_param("i", $id_proveedor);
-        if ($stmt->execute()) {
-            header("Location: ../pages/admin/proveedores.php");
-            exit();
-        }
+if (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+
+    $sql = "UPDATE proveedores SET estado = 'Inactivo' WHERE id_proveedor = $id";
+
+    if (mysqli_query($conexion, $sql)) {
+        header("Location: ../pages/admin/proveedores.php?msg=eliminado");
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($conexion);
     }
 }
+
+mysqli_close($conexion);

@@ -1,6 +1,6 @@
 <?php
 include('../../config/conexion.php');
-$sql = "SELECT * FROM proveedores";
+$sql = "SELECT * FROM proveedores WHERE estado = 'Activo'";
 $ejecucionDeConsulta = mysqli_query($conexion, $sql);
 ?>
 <!DOCTYPE html>
@@ -165,12 +165,9 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
                 <td><?php echo $filas['email']; ?></td>
                 <td><?php echo $filas['estado']; ?></td>
                 <td>
-                  <button class="btn-secondary" onclick="abrirModalEditar(<?php echo $filas['id_proveedor']; ?>, '<?php echo $filas['nombre_proveedor']; ?>', '<?php echo $filas['direccion']; ?>', '<?php echo $filas['telefono']; ?>', '<?php echo $filas['email']; ?>')">Editar</button>
-                  <?php if ($filas['estado'] === 'Activo') { ?>
-                    <button class="btn-primary" onclick="cambiarEstadoProveedor(<?php echo $filas['id_proveedor']; ?>, 'Inactivo')">Desactivar</button>
-                  <?php } else { ?>
-                    <button class="btn-primary" onclick="cambiarEstadoProveedor(<?php echo $filas['id_proveedor']; ?>, 'Activo')">Activar</button>
-                  <?php } ?>
+                  <button class="btn-secondary" onclick="abrirModalEditar(<?php echo $filas['id_proveedor']; ?>, '<?php echo $filas['nombre_proveedor']; ?>', '<?php echo $filas['direccion']; ?>', '<?php echo $filas['telefono']; ?>', '<?php echo $filas['email']; ?>')">Editar</button>   
+                  <button class="btn-primary" onclick="eliminarCliente(<?php echo $filas['id_proveedor']; ?>)">
+                    Eliminar               
                 </td>
               </tr>
             <?php } ?>
@@ -194,6 +191,17 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
         </div>
 
       </main>
+      <?php if (isset($_GET['msg']) && $_GET['msg'] == "eliminado") { ?>
+        <script>
+          Swal.fire({
+            title: "Proveedor eliminado",
+            text: "El proveedor ahora está marcado como INACTIVO",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        </script>
+      <?php } ?>
     </div>
   </div>
 
@@ -219,11 +227,25 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
       document.getElementById("editarProveedor").style.display = "none";
     }
 
-    function cambiarEstadoProveedor(id, nuevoEstado) {
-      fetch(`../../procesos/cambiar_estado_proveedor.php?id=${id}&estado=${nuevoEstado}`)
-        .then(response => response.text())
-        .then(data => location.reload());
-    }
+    // function cambiarEstadoProveedor(id, nuevoEstado) {
+    //   fetch(`../../procesos/cambiar_estado_proveedor.php?id=${id}&estado=${nuevoEstado}`)
+    //     .then(response => response.text())
+    //     .then(data => location.reload());
+    // }
+  function eliminarCliente(id) {
+    Swal.fire({
+      title: "¿Eliminar cliente?",
+      text: "Este cliente pasará a estado INACTIVO",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "../../procesos/eliminar_proveedores.php?id=" + id;
+      }
+    });
+  }
   </script>
 
   <?php mysqli_close($conexion); ?>

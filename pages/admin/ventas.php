@@ -164,7 +164,7 @@ if ($result === false) {
             <nav>
                 <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
                 <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
-                <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
+                <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Productos</span></a>
                 <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
                 <a href="ventas.php" class="active"><span class="icon">💰</span> <span class="text">Ventas</span></a>
                 <a href="reporte_ventas.php"><span class="icon">📈</span> <span class="text">Reportes de Ventas</span></a>
@@ -246,7 +246,7 @@ if ($result === false) {
                                 $consulta = "SELECT id_cliente, nombre,apellido FROM clientes WHERE estado = 'activo'";
                                 $resultado = $conn->query($consulta);
                                 ?>
-                                <select name="cliente" id="">
+                                <select name="cliente" id="" required>
                                     <option value="" disabled selected>Seleccione un cliente</option>
                                      <?php while ($row = $resultado->fetch_assoc()) { ?>
                                         <option value="<?= $row['id_cliente']; ?>"><?= $row['nombre'] . ' ' . $row['apellido']; ?></option>
@@ -258,7 +258,7 @@ if ($result === false) {
 
                                 <p>Método de Pago</p>
                                 <select name="metodo_pago" required>
-                                    <option value="" disabled selected>Seleccione</option>
+                                    <option value="" disabled selected>Seleccione un metodo de pago</option>
                                     <option value="Efectivo">Efectivo</option>
                                     <option value="Transferencia">Transferencia</option>
                                 </select>

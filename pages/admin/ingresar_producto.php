@@ -119,7 +119,7 @@ if (isset($_GET['eliminar'])) {
         }
 
         .btn-secondary {
-            background-color: #888;
+            color: #37353E;
         }
 
         .btn-eliminar {
@@ -210,7 +210,7 @@ if (isset($_GET['eliminar'])) {
                 <a href="ingresar_producto.php" class="active"><span class="icon">🛠️</span>Productos</a>
                 <a href="clientes.php"><span class="icon">👥</span>Clientes</a>
                 <a href="ventas.php"><span class="icon">💰</span>Ventas</a>
-                <a href="reporte_ventas.php"><span class="icon">📈</span>Reportes</a>
+                <a href="reporte_ventas.php"><span class="icon">📈</span>Reportes de ventas</a>
             </nav>
         </aside>
 
@@ -359,7 +359,7 @@ if (isset($_GET['eliminar'])) {
                                             <td>
                                              <button class='btn-secondary' onclick=\"abrirModalEditar('{$producto['id_carga']}', '{$producto['nombre_producto']}', '{$producto['descripcion']}',  '{$producto['id_categoria']}','{$producto['categorias']}', '{$producto['precio_compra']}', '{$producto['precio_venta']}', '{$producto['stockDisponible']}')\">Editar</button>
                                                 <a href='?eliminar={$producto['id_carga']}' onclick=\"return confirm('¿Seguro que quieres eliminar este producto?')\">
-                                                    <button class='btn-eliminar'>Eliminar</button>
+                                                    <button class='btn-primary'>Eliminar</button>
                                                 </a>
                                             </td>
                                           </tr>";

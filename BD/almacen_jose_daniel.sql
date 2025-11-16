@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-11-2025 a las 21:19:00
+-- Tiempo de generación: 16-11-2025 a las 15:42:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -47,8 +47,8 @@ INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id
 (2, 'La Serenicima', 'La más natural', 1, 1200.99, 3200.00, NULL, 'Activo'),
 (3, 'Arroz Integral 0000-Tio Carlos.', 'Paquete de arroz integral.', 2, 2973.99, 7550.99, NULL, 'Inactivo'),
 (4, 'Leche en polvo', 'aaaa', 1, 500.00, 1500.00, NULL, 'Inactivo'),
-(5, 'Arroz doña nona', 'alimento para toda la familia', 3, 800.99, 2800.99, NULL, 'Activo'),
-(6, 'yogur La Serenicima', 'Sabor frutilla', 1, 800.00, 30800.00, NULL, 'Activo');
+(5, 'Arroz doña nona', 'alimento para toda la familia', 3, 800.99, 2800.99, NULL, 'Inactivo'),
+(6, 'yogur La Serenicima', 'Sabor frutilla', 1, 800.00, 3800.00, NULL, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,7 @@ CREATE TABLE `categoria` (
 INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`, `descripcion`, `estado`) VALUES
 (1, 'Lacteos', 'todos los lacteos.', 'Activo'),
 (2, 'Cereales', 'Alimentos a base hidratos de carbonos y proteínas.', 'Activo'),
-(3, 'Alimentos', 'todos los alimentos', 'Activo');
+(3, 'Alimentos', 'todos los alimentos', 'Inactivo');
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,10 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido`, `dni`, `direccion`, `telefono`, `email`, `estado`) VALUES
-(1, 'jorge', 'sanchez', 40593079, 'calle falsa 103', 3444549, 'crrrrc@rryryry', 'Activo');
+(1, 'jorge', 'sanchez', 40593079, 'calle falsa 103', 3444549, 'crrrrc@rryryry', 'Activo'),
+(2, 'Sofia', 'Algañaraz', 40593078, 'calle falsa 103', 3444556, 'crrrrc@rryryo', 'Inactivo'),
+(3, 'Jorge ', 'marquez', 30678987, 'calle falsa 10w', 2567899, 'crrrrc@wxample.com', 'Activo'),
+(4, 'Fatima', 'Martinez', 23894567, 'Calle inexistente 34', 264345069, 'Fati@example.com', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -115,11 +118,11 @@ CREATE TABLE `inventario_productos` (
 
 INSERT INTO `inventario_productos` (`id_inventario`, `id_carga`, `stockDisponible`, `fecha_actualizacion`) VALUES
 (1, 1, 20, NULL),
-(2, 2, 350, NULL),
+(2, 2, 340, NULL),
 (3, 3, 504, NULL),
 (4, 4, 70, NULL),
 (5, 5, 120, NULL),
-(6, 6, 130, NULL);
+(6, 6, 116, NULL);
 
 -- --------------------------------------------------------
 
@@ -205,20 +208,20 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `clave`, `id_rol`) VALUE
 
 CREATE TABLE `ventas_productos` (
   `id_venta` int(11) NOT NULL,
-  `cliente` varchar(100) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   `total_venta` decimal(10,2) DEFAULT NULL,
   `fecha_venta` datetime DEFAULT NULL,
-  `metodo_pago` varchar(50) DEFAULT NULL,
-  `id_cliente` int(11) DEFAULT NULL
+  `metodo_pago` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `ventas_productos`
 --
 
-INSERT INTO `ventas_productos` (`id_venta`, `cliente`, `descripcion`, `total_venta`, `fecha_venta`, `metodo_pago`, `id_cliente`) VALUES
-(1, 'jorge sanchez', 'leche ilolay x1', 400.99, '2025-11-11 00:00:00', 'Transferencia', NULL);
+INSERT INTO `ventas_productos` (`id_venta`, `id_cliente`, `descripcion`, `total_venta`, `fecha_venta`, `metodo_pago`) VALUES
+(1, 1, 'La Serenicima x5', 16000.00, '2025-11-16 00:00:00', 'Efectivo'),
+(2, 3, 'yogur La Serenicima x7', 26600.00, '2025-11-16 00:00:00', 'Transferencia');
 
 --
 -- Índices para tablas volcadas
@@ -303,7 +306,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario_productos`
@@ -339,7 +342,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas_productos`
 --
 ALTER TABLE `ventas_productos`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

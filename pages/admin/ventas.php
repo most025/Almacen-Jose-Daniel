@@ -242,7 +242,16 @@ if ($result === false) {
                             <h2>Registrar Venta</h2>
                             <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
                                 <p>Nombre del Cliente</p>
-                                <input type="text" name="cliente" required>
+                                 <?php
+                                $consulta = "SELECT id_cliente, nombre,apellido FROM clientes WHERE estado = 'activo'";
+                                $resultado = $conn->query($consulta);
+                                ?>
+                                <select name="cliente" id="">
+                                    <option value="" disabled selected>Seleccione un cliente</option>
+                                     <?php while ($row = $resultado->fetch_assoc()) { ?>
+                                        <option value="<?= $row['id_cliente']; ?>"><?= $row['nombre'] . ' ' . $row['apellido']; ?></option>
+                                    <?php } ?>
+                                </select>
 
                                 <!-- <p>DNI del Cliente</p>
                                 <input type="number" name="dni" required placeholder="Ingrese el DNI"> -->

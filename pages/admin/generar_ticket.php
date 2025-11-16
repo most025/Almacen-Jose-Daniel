@@ -12,9 +12,10 @@ if ($conn->connect_error) {
 $id_venta = $_GET['id_venta'] ?? 0;
 
 // 🔍 Consulta según estructura real de tu tabla
-$sql = "SELECT id_venta, descripcion AS producto, cliente, total_venta, metodo_pago, fecha_venta
-        FROM ventas_productos
-        WHERE id_venta = ?";
+$sql = "SELECT vp.id_venta, vp.descripcion AS producto, concat(cl.nombre, ' ', cl.apellido) AS cliente, vp.total_venta, vp.metodo_pago, vp.fecha_venta
+        FROM ventas_productos vp
+        INNER JOIN clientes cl ON vp.id_cliente = cl.id_cliente
+        WHERE vp.id_venta = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_venta);
 $stmt->execute();

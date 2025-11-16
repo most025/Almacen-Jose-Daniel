@@ -18,8 +18,9 @@ if ($filtro == 'mensual') {
     $condicion = "DATE(fecha_venta) = CURDATE()";
 }
 
-$sql = "SELECT id_venta, descripcion AS producto, cliente, total_venta, metodo_pago, fecha_venta
-        FROM ventas_productos
+$sql = "SELECT vp.id_venta, vp.descripcion AS producto, concat(cl.nombre, ' ', cl.apellido) AS cliente, vp.total_venta, vp.metodo_pago, vp.fecha_venta
+        FROM ventas_productos vp
+        INNER JOIN clientes cl ON vp.id_cliente = cl.id_cliente
         WHERE $condicion
         ORDER BY fecha_venta DESC";
 

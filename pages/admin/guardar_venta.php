@@ -55,9 +55,9 @@ foreach ($productos as $p) {
 // Insertar venta (una sola fila con productos agrupados)
 $descripcion_final = implode(", ", $descripcion_arr);
 $stmt3 = $conn->prepare("INSERT INTO ventas_productos
-    (descripcion, cliente, total_venta, fecha_venta, metodo_pago)
+    (descripcion, id_cliente, total_venta, fecha_venta, metodo_pago)
     VALUES (?, ?, ?, ?, ?)");
-$stmt3->bind_param("ssdss",  $descripcion_final, $cliente, $total_venta, $fecha_venta, $metodo_pago);
+$stmt3->bind_param("sidss",  $descripcion_final, $cliente, $total_venta, $fecha_venta, $metodo_pago);
 
 if ($stmt3->execute()) {
     echo "✅ Venta registrada correctamente.";

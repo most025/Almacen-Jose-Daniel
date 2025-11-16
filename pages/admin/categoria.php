@@ -145,7 +145,7 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
                     '<?php echo $filas['descripcion']; ?>')">Editar</button>
 
                 <button class="btn-primary" 
-                  onclick="eliminarCategoria(<?php echo $filas['id_categoria']; ?>)">Inactivar</button>
+                  onclick="eliminarCategoria(<?php echo $filas['id_categoria']; ?>)">Eliminar</button>
               </td>
             </tr>
             <?php } ?>

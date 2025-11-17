@@ -215,7 +215,7 @@ if (isset($_GET['eliminar'])) {
                 <a href="ingresar_producto.php" class="active"><span class="icon">🛠️</span>Productos</a>
                 <a href="clientes.php"><span class="icon">👥</span>Clientes</a>
                 <a href="ventas.php"><span class="icon">💰</span>Ventas</a>
-                <a href="reporte_ventas.php"><span class="icon">📈</span>Reportes de ventas</a>
+                <a href="reporte_ventas.php"><span class="icon">📈</span>Reportes de Ventas</a>
             </nav>
         </aside>
 

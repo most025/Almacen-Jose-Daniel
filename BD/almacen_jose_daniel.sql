@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2025 a las 15:42:34
+-- Tiempo de generación: 17-11-2025 a las 22:51:23
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -48,7 +48,11 @@ INSERT INTO `carga_productos` (`id_carga`, `nombre_producto`, `descripcion`, `id
 (3, 'Arroz Integral 0000-Tio Carlos.', 'Paquete de arroz integral.', 2, 2973.99, 7550.99, NULL, 'Inactivo'),
 (4, 'Leche en polvo', 'aaaa', 1, 500.00, 1500.00, NULL, 'Inactivo'),
 (5, 'Arroz doña nona', 'alimento para toda la familia', 3, 800.99, 2800.99, NULL, 'Inactivo'),
-(6, 'yogur La Serenicima', 'Sabor frutilla', 1, 800.00, 3800.00, NULL, 'Activo');
+(6, 'yogur La Serenicima', 'Sabor frutilla.', 1, 800.00, 3800.00, NULL, 'Activo'),
+(7, 'Arroz Integral 0000-Tio Tito.', 'el mas rico', 2, 4000.00, 6000.00, NULL, 'Activo'),
+(8, 'Arroz Integral 0000 -Tio Jose.', 'Super rico.', 2, 4500.00, 6500.00, NULL, 'Activo'),
+(9, 'Arroz Integral 0000-Tia laura', 'El arroz familiar para el fin de semana.', 2, 4500.00, 6500.00, NULL, 'Activo'),
+(10, 'Arroz Integral 0000-Tia laura.', 'hhjujuuuju', 2, 4500.00, 6500.00, NULL, 'Inactivo');
 
 -- --------------------------------------------------------
 
@@ -83,9 +87,7 @@ CREATE TABLE `clientes` (
   `nombre` varchar(100) DEFAULT NULL,
   `apellido` varchar(100) DEFAULT NULL,
   `dni` int(100) DEFAULT NULL,
-  `direccion` varchar(100) DEFAULT NULL,
   `telefono` int(11) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
   `estado` enum('Activo','Inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -93,11 +95,14 @@ CREATE TABLE `clientes` (
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido`, `dni`, `direccion`, `telefono`, `email`, `estado`) VALUES
-(1, 'jorge', 'sanchez', 40593079, 'calle falsa 103', 3444549, 'crrrrc@rryryry', 'Activo'),
-(2, 'Sofia', 'Algañaraz', 40593078, 'calle falsa 103', 3444556, 'crrrrc@rryryo', 'Inactivo'),
-(3, 'Jorge ', 'marquez', 30678987, 'calle falsa 10w', 2567899, 'crrrrc@wxample.com', 'Activo'),
-(4, 'Fatima', 'Martinez', 23894567, 'Calle inexistente 34', 264345069, 'Fati@example.com', 'Activo');
+INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido`, `dni`, `telefono`, `estado`) VALUES
+(1, 'jorge', 'sanchez', 40593079, 3444549, 'Activo'),
+(2, 'Sofia', 'Algañaraz', 40593078, 3444556, 'Inactivo'),
+(3, 'Jorge ', 'marquez', 30678987, 2567899, 'Activo'),
+(4, 'Fatima', 'Martinez', 23894567, 264345069, 'Activo'),
+(5, 'Benito', 'Clavel', 20154908, 264589076, 'Activo'),
+(6, 'Benito', 'suarez', 13456089, 264987034, 'Activo'),
+(7, 'Jose ', 'Diaz', 127686960, 264988089, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -122,7 +127,11 @@ INSERT INTO `inventario_productos` (`id_inventario`, `id_carga`, `stockDisponibl
 (3, 3, 504, NULL),
 (4, 4, 70, NULL),
 (5, 5, 120, NULL),
-(6, 6, 116, NULL);
+(6, 6, 116, NULL),
+(7, 7, 298, NULL),
+(8, 8, 300, NULL),
+(9, 9, 307, NULL),
+(10, 10, 305, NULL);
 
 -- --------------------------------------------------------
 
@@ -178,7 +187,8 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id_rol`, `rol`, `descripcion`) VALUES
-(1, 'administrador', 'tiene control total del sistema');
+(1, 'administrador', 'tiene control total del sistema'),
+(2, 'Vendedor', 'Se ocupa de la parte de ventas');
 
 -- --------------------------------------------------------
 
@@ -198,7 +208,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `clave`, `id_rol`) VALUES
-(1, 'raiz45', '12345', 1);
+(1, 'raiz45', '12345', 1),
+(2, 'empleado1', '123456', 2);
 
 -- --------------------------------------------------------
 
@@ -221,7 +232,9 @@ CREATE TABLE `ventas_productos` (
 
 INSERT INTO `ventas_productos` (`id_venta`, `id_cliente`, `descripcion`, `total_venta`, `fecha_venta`, `metodo_pago`) VALUES
 (1, 1, 'La Serenicima x5', 16000.00, '2025-11-16 00:00:00', 'Efectivo'),
-(2, 3, 'yogur La Serenicima x7', 26600.00, '2025-11-16 00:00:00', 'Transferencia');
+(2, 3, 'yogur La Serenicima x7', 26600.00, '2025-11-16 00:00:00', 'Transferencia'),
+(3, 4, 'Arroz Integral 0000-Tio Tito. x2', 12000.00, '2025-11-17 00:00:00', 'Transferencia'),
+(4, 7, 'Arroz Integral 0000 -Tio Jose. x4', 26000.00, '2025-11-17 00:00:00', 'Efectivo');
 
 --
 -- Índices para tablas volcadas
@@ -294,7 +307,7 @@ ALTER TABLE `ventas_productos`
 -- AUTO_INCREMENT de la tabla `carga_productos`
 --
 ALTER TABLE `carga_productos`
-  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_carga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
@@ -306,13 +319,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario_productos`
 --
 ALTER TABLE `inventario_productos`
-  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `ofertas_productos`
@@ -330,19 +343,19 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas_productos`
 --
 ALTER TABLE `ventas_productos`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas

@@ -157,8 +157,6 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
               <input type="text" name="nombre" placeholder="Nombre" required>
               <input type="text" name="apellido" placeholder="Apellido" required>
               <input type="text" name="dni" placeholder="DNI" required>
-              <input type="text" name="direccion" placeholder="Dirección" required>
-              <input type="email" name="email" placeholder="Email" required>
               <input type="tel" name="telefono" placeholder="Teléfono" required>
               <button class="btn-primary" type="submit">Agregar</button>
             </form>
@@ -174,14 +172,12 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
             document.getElementById("agregarCliente").style.display = "none";
           }
 
-          function abrirModalEditar(id, nombre, apellido, dni, direccion, email, telefono) {
+          function abrirModalEditar(id, nombre, apellido, dni,  telefono) {
             document.getElementById("editarCliente").style.display = "block";
             document.getElementById("id_cliente").value = id;
             document.getElementById("nombre_edit").value = nombre;
             document.getElementById("apellido_edit").value = apellido;
             document.getElementById("dni_edit").value = dni;
-            document.getElementById("direccion_edit").value = direccion;
-            document.getElementById("email_edit").value = email;
             document.getElementById("telefono_edit").value = telefono;
           }
 
@@ -203,8 +199,6 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
               <th>Nombre</th>
               <th>Apellido</th>
               <th>DNI</th>
-              <th>Dirección</th>
-              <th>Email</th>
               <th>Teléfono</th>
               <th>Acciones</th>
             </tr>
@@ -215,12 +209,10 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
                 <td><?php echo $filas['nombre']; ?></td>
                 <td><?php echo $filas['apellido']; ?></td>
                 <td><?php echo $filas['dni']; ?></td>
-                <td><?php echo $filas['direccion']; ?></td>
-                <td><?php echo $filas['email']; ?></td>
                 <td><?php echo $filas['telefono']; ?></td>
                 <td>
                   <button class="btn-secondary"
-                    onclick="abrirModalEditar(<?php echo $filas['id_cliente']; ?>, '<?php echo $filas['nombre']; ?>', '<?php echo $filas['apellido']; ?>', '<?php echo $filas['dni']; ?>', '<?php echo $filas['direccion']; ?>', '<?php echo $filas['email']; ?>', '<?php echo $filas['telefono']; ?>')">Editar</button>
+                    onclick="abrirModalEditar(<?php echo $filas['id_cliente']; ?>, '<?php echo $filas['nombre']; ?>', '<?php echo $filas['apellido']; ?>', '<?php echo $filas['dni']; ?>', '<?php echo $filas['telefono']; ?>')">Editar</button>
                   <button class="btn-primary" onclick="eliminarCliente(<?php echo $filas['id_cliente']; ?>)">
                     Eliminar
                   </button>
@@ -260,10 +252,6 @@ $ejecucionDeConsulta = mysqli_query($conexion, $sql);
         <input type="text" id="apellido_edit" name="apellido" required>
         <p>DNI</p>
         <input type="text" id="dni_edit" name="dni" required>
-        <p>Dirección</p>
-        <input type="text" id="direccion_edit" name="direccion" required>
-        <p>Email</p>
-        <input type="email" id="email_edit" name="email" required>
         <p>Teléfono</p>
         <input type="tel" id="telefono_edit" name="telefono" required>
         <button class="btn-primary" type="submit">Actualizar</button>

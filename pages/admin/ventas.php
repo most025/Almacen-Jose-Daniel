@@ -8,10 +8,10 @@ if ($conn->connect_error) {
 }
 
 // Consulta productos con stock > 0
-$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.precio_venta,cp.estado, ip.stockDisponible
+$sql = "SELECT cp.id_carga, cp.nombre_producto, cp.precio_venta, cp.estado, ip.stockDisponible
         FROM carga_productos cp
         INNER JOIN inventario_productos ip ON cp.id_carga = ip.id_carga
-        WHERE ip.stockDisponible > 0 and cp.estado = 'Activo'
+        WHERE ip.stockDisponible > 0 AND cp.estado = 'Activo'
         ORDER BY cp.nombre_producto ASC";
 $result = $conn->query($sql);
 if ($result === false) {
@@ -36,31 +36,25 @@ if ($result === false) {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: #f5f5f5;
         }
-
         .container {
             display: flex;
         }
-
         .content {
             padding: 20px;
         }
-
         .card {
             background-color: white;
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
-
         h2 {
             color: #0d1b4c;
             margin-bottom: 10px;
         }
-
         .buscador {
             margin-bottom: 10px;
         }
-
         input[type="text"], input[type="number"], select, .cantidad {
             width: 100%;
             padding: 8px;
@@ -69,7 +63,6 @@ if ($result === false) {
             margin-top: 5px;
             font-size: 14px;
         }
-
         .producto-item {
             display: inline-block;
             vertical-align: top;
@@ -82,16 +75,13 @@ if ($result === false) {
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
             transition: transform 0.1s ease-in-out;
         }
-
         .producto-item:hover {
             transform: scale(1.02);
             background-color: #fdfdfd;
         }
-
         .producto-item strong {
             color: #0d1b4c;
         }
-
         .btn-primary, .btn-secondary, .btn-success {
             cursor: pointer;
             border: none;
@@ -101,21 +91,16 @@ if ($result === false) {
             font-size: 14px;
             text-align: center;
         }
-
         .btn-secondary { background-color: #888; }
         .btn-success { background-color: #1c56ca; }
-
         .btn-success:hover { background-color: #2a64d1; }
-
         .lista {
             list-style: none;
             padding-left: 15px;
         }
-
         .tabs {
             margin-bottom: 15px;
         }
-
         .tab-btn {
             background-color: #0d1b4c;
             color: white;
@@ -124,11 +109,9 @@ if ($result === false) {
             border-radius: 5px;
             cursor: pointer;
         }
-
         .tab-btn:hover {
             background-color: #e66e1d;
         }
-
         .alert-info {
             background-color: #e0e7ff;
             color: #0d1b4c;
@@ -136,12 +119,10 @@ if ($result === false) {
             border-radius: 5px;
             text-align: center;
         }
-
         #total {
             color: #0d1b4c;
             font-weight: bold;
         }
-
         a.link-ventas {
             color: #0d1b4c;
             font-weight: bold;
@@ -156,6 +137,7 @@ if ($result === false) {
 
 <body>
     <div class="container">
+
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
@@ -173,6 +155,7 @@ if ($result === false) {
 
         <!-- Main -->
         <div class="main">
+
             <!-- Header -->
             <header class="header">
                 <h1 class="title">Gestión de Ventas</h1>
@@ -182,7 +165,7 @@ if ($result === false) {
                 </div>
             </header>
 
-            <!-- Contenido -->
+            <!-- Contenido Principal -->
             <main class="content">
                 <div class="tabs">
                     <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
@@ -190,6 +173,7 @@ if ($result === false) {
                 </div>
 
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
                     <!-- Lista de productos -->
                     <div style="flex: 2;">
                         <div class="card">
@@ -236,29 +220,32 @@ if ($result === false) {
                         </div>
                     </div>
 
-                    <!-- Formulario de venta -->
+                    <!-- Formulario de Venta -->
                     <div style="flex: 1; min-width: 300px;">
                         <div class="card">
                             <h2>Registrar Venta</h2>
                             <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
+
                                 <p>Nombre del Cliente</p>
-                                 <?php
-                                $consulta = "SELECT id_cliente, nombre,apellido FROM clientes WHERE estado = 'activo'";
+
+                                <?php
+                                // *** CONSULTA MODIFICADA CON DNI ***
+                                $consulta = "SELECT id_cliente, nombre, apellido, dni FROM clientes WHERE estado = 'activo'";
                                 $resultado = $conn->query($consulta);
                                 ?>
-                                <select name="cliente" id="" required>
+
+                                <select name="cliente" required>
                                     <option value="" disabled selected>Seleccione un cliente</option>
-                                     <?php while ($row = $resultado->fetch_assoc()) { ?>
-                                        <option value="<?= $row['id_cliente']; ?>"><?= $row['nombre'] . ' ' . $row['apellido']; ?></option>
+                                    <?php while ($row = $resultado->fetch_assoc()) { ?>
+                                        <option value="<?= $row['id_cliente']; ?>">
+                                            <?= $row['nombre'] . ' ' . $row['apellido'] . ' - DNI: ' . $row['dni']; ?>
+                                        </option>
                                     <?php } ?>
                                 </select>
 
-                                <!-- <p>DNI del Cliente</p>
-                                <input type="number" name="dni" required placeholder="Ingrese el DNI"> -->
-
                                 <p>Método de Pago</p>
                                 <select name="metodo_pago" required>
-                                    <option value="" disabled selected>Seleccione un metodo de pago</option>
+                                    <option value="" disabled selected>Seleccione un método de pago</option>
                                     <option value="Efectivo">Efectivo</option>
                                     <option value="Transferencia">Transferencia</option>
                                 </select>
@@ -270,11 +257,13 @@ if ($result === false) {
                                 <ul id="listaProductos" class="lista"></ul>
 
                                 <h3>Total: 💰$<span id="total">0.00</span></h3>
+
                                 <br>
                                 <button type="submit" class="btn-success" style="width:100%;">Confirmar Venta</button>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </main>
         </div>
@@ -353,6 +342,7 @@ if ($result === false) {
             });
         }
     </script>
+
 </body>
 </html>
 

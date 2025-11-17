@@ -11,6 +11,38 @@ $precio_compra = $_POST['precio_compra'];
 $precio_venta = $_POST['precio_venta'];
 $stock = $_POST['stock'];
 
+$SQLvalidacion = "SELECT id_carga FROM carga_productos WHERE nombre_producto = ? AND estado = 'Activo'";
+$prepararValidacion = $conn->prepare($SQLvalidacion);
+$prepararValidacion->bind_param("s", $nombre);
+$prepararValidacion->execute();
+$prepararValidacion->store_result();
+
+if ($prepararValidacion->num_rows > 0) {
+?>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Producto Existente</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.ico">
+    <script src="../../dependencias/sweetalert2@11.js"></script>
+</head>
+<body>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Producto duplicado',
+            text: 'Ya existe un producto registrado con ese nombre.',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+            window.location.href = 'ingresar_producto.php';
+        });
+    </script>
+</body>
+</html>
+<?php
+    exit;
+}
+$prepararValidacion->close();
 // Insertar en carga_productos
 $sql1 = "INSERT INTO carga_productos (nombre_producto, descripcion, id_categoria, precio_compra, precio_venta, estado) 
          VALUES ('$nombre', '$descripcion', '$categoria', '$precio_compra', '$precio_venta', 'Activo')";

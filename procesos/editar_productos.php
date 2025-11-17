@@ -14,6 +14,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $precio_venta = floatval($_POST['precio_venta']);
   $stock = intval($_POST['stockDisponible']);
 
+  $SqlValidacion = "SELECT id_carga FROM carga_productos 
+               WHERE nombre_producto = ? 
+               AND id_carga != ?
+               AND estado = 'Activo'";
+  $prepararValidacion = $conexion->prepare($SqlValidacion); 
+  $prepararValidacion->bind_param("si", $nombre, $id_carga);
+  $prepararValidacion->execute();
+  $prepararValidacion->store_result();
+
+  if ($prepararValidacion->num_rows > 0) {
+    ?>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Producto Existente</title>
+        <link rel="icon" type="image/x-icon" href="../assets/img/logo.ico">
+        <script src="../dependencias/sweetalert2@11.js"></script> 
+    </head>
+    <body>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Producto duplicado',
+                text: 'Ya existe un producto registrado con ese nombre.',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                window.location.href = '../pages/admin/ingresar_producto.php';
+            });
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+  }
+  $prepararValidacion->close();
+
   // Transacción para asegurar integridad
   $conexion->begin_transaction();
 

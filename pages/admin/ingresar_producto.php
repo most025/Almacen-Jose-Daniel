@@ -196,6 +196,11 @@ if (isset($_GET['eliminar'])) {
             font-size: 28px;
             font-weight: bold;
         }
+        .textarea{
+            resize: vertical;
+            min-height: 60px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 
@@ -270,7 +275,7 @@ if (isset($_GET['eliminar'])) {
                                 <input type="hidden" id="id_producto" name="id_carga">
 
                                 <input type="text" id="nombre_edit" name="nombre_producto" placeholder="Nombre del Producto" required>
-                                <textarea id="descripcion_edit" name="descripcion" placeholder="Descripción del Producto" required></textarea>
+                                <textarea  class="textarea"id="descripcion_edit" name="descripcion" placeholder="Descripción del Producto" required></textarea>
 
                                 <select name="categoria" id="categoria_edit" required>
                                     <option value="" disabled selected>Seleccione una categoría</option>

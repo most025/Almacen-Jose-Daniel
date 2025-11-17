@@ -15,11 +15,11 @@
     <aside class="sidebar">
       <div class="logo"><img src="../../assets/img/logo.ico" alt="Descripción de la imagen" width="200" height="100"></div>
       <nav>
-        <a href="dashboard_vendedor.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
-        <!-- <a href="#"><span class="icon">📦</span> <span class="text">Proveedores</span></a> -->
-        <!-- <a href="#"><span class="icon">🛠️</span> <span class="text">Administrar Artículos</span></a>
-        <a href="#"><span class="icon">👥</span> <span class="text">Clientes</span></a> -->
-        <a href="#"><span class="icon">💰</span> <span class="text">Ventas</span></a>
+     <a href="dashboard_vendedor.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
+        <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Productos</span></a>
+        <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
+        <a href="ventas.php"><span class="icon">💰</span> <span class="text">Ventas</span></a>
+        <a href="reporte_ventas.php"><span class="icon">📈</span> <span class="text">Reporte de Ventas</span></a>
       </nav>
 
     </aside>

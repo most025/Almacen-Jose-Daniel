@@ -34,10 +34,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $conexion->commit();
 
-    echo "<script>
-            alert('✅ Producto actualizado correctamente.');
-            window.location.href='../pages/admin/ingresar_producto.php';
-          </script>";
+    // echo "<script>
+    //         alert('✅ Producto actualizado correctamente.');
+    //         window.location.href='../pages/admin/ingresar_producto.php';
+    //       </script>";
+    ?>
+    <html>
+<head>
+    <meta charset="UTF-8">
+    <title>Producto Actualizado</title>
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo.ico">
+    <script src="../dependencias/sweetalert2@11.js"></script>
+    <body>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Producto actualizado correctamente',
+        showConfirmButton: false,
+        timer: 1500
+    }).then(() => {
+        window.location.href = '../pages/admin/ingresar_producto.php';
+    });
+    </script>
+    </body>
+    </html>
+    <?php
   } catch (Exception $e) {
     $conexion->rollback();
     echo "<script>
@@ -46,5 +67,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           </script>";
   }
 }
-$conn->close();
+$conexion->close();
 ?>

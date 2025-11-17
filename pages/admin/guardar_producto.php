@@ -23,10 +23,29 @@ if ($conn->query($sql1) === TRUE) {
              VALUES ('$id_carga', '$stock')";
     $conn->query($sql2);
 
-    echo "<script>
-        alert('✅ Producto registrado correctamente');
-        window.location.href='ingresar_producto.php';
-    </script>";
+?>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Producto Guardado</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.ico">
+    <script src="../../dependencias/sweetalert2@11.js"></script>
+</head>
+<body>
+    
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Producto registrado correctamente',
+        showConfirmButton: false,
+        timer: 1500
+    }).then(() => {
+        window.location.href = 'ingresar_producto.php';
+    });
+</script>
+</body>
+
+<?php
 } else {
     echo "Error: " . $sql1 . "<br>" . $conn->error;
 }

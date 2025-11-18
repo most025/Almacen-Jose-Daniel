@@ -144,8 +144,7 @@ if ($result === false) {
                 <img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100">
             </div>
             <nav>
-                <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
-                <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
+                <a href="dashboard_vendedor.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
                 <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Productos</span></a>
                 <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
                 <a href="ventas.php" class="active"><span class="icon">💰</span> <span class="text">Ventas</span></a>

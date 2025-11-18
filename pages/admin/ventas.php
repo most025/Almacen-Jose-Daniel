@@ -161,7 +161,6 @@ if ($result === false) {
                 <h1 class="title">Gestión de Ventas</h1>
                 <div class="icons">
                     <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
-                    <script src="../../assets/js/alerta.js"></script>
                 </div>
             </header>
 
@@ -224,17 +223,21 @@ if ($result === false) {
                     <div style="flex: 1; min-width: 300px;">
                         <div class="card">
                             <h2>Registrar Venta</h2>
+
                             <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
 
                                 <p>Nombre del Cliente</p>
 
+                                <!-- BUSCADOR AGREGADO PARA CLIENTES -->
+                                <input type="text" id="buscarCliente" placeholder="Buscar cliente..." onkeyup="filtrarClientes()">
+
                                 <?php
-                                // *** CONSULTA MODIFICADA CON DNI ***
+                                // Consulta modificada con DNI
                                 $consulta = "SELECT id_cliente, nombre, apellido, dni FROM clientes WHERE estado = 'activo'";
                                 $resultado = $conn->query($consulta);
                                 ?>
 
-                                <select name="cliente" required>
+                                <select name="cliente" id="selectCliente" required>
                                     <option value="" disabled selected>Seleccione un cliente</option>
                                     <?php while ($row = $resultado->fetch_assoc()) { ?>
                                         <option value="<?= $row['id_cliente']; ?>">
@@ -341,11 +344,24 @@ if ($result === false) {
                 item.style.display = text.includes(filtro) ? '' : 'none';
             });
         }
+
+        // 
+        function filtrarClientes() {
+            let input = document.getElementById("buscarCliente").value.toLowerCase();
+            let select = document.getElementById("selectCliente");
+            let opciones = select.getElementsByTagName("option");
+
+            for (let i = 1; i < opciones.length; i++) {
+                let texto = opciones[i].textContent.toLowerCase();
+                opciones[i].style.display = texto.includes(input) ? "" : "none";
+            }
+        }
     </script>
 
 </body>
 </html>
 
 <?php $conn->close(); ?>
+
 
 

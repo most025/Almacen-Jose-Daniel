@@ -20,7 +20,7 @@
         <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Productos</span></a>
         <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
         <a href="ventas.php"><span class="icon">💰</span> <span class="text">Ventas</span></a>
-        <a href="reporte_ventas.php"><span class="icon">📈</span> <span class="text">Reporte de Ventas</span></a>
+        <a href="reporte_ventas.php"><span class="icon">📈</span> <span class="text">Reportes de ventas</span></a>
       </nav>
 
     </aside>

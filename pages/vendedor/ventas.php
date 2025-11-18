@@ -1,5 +1,5 @@
 <?php
-// ventas.php - versión adaptada sin Bootstrap
+// ventas.php - versión adaptada sin Bootstrap, coherente con proveedores.php e ingresar_producto.php
 
 // Conexión a la base de datos
 $conn = new mysqli("localhost", "root", "", "almacen_jose_daniel");
@@ -36,17 +36,26 @@ if ($result === false) {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: #f5f5f5;
         }
-        .container { display: flex; }
-        .content { padding: 20px; }
-
+        .container {
+            display: flex;
+        }
+        .content {
+            padding: 20px;
+        }
         .card {
             background-color: white;
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
-        h2 { color: #0d1b4c; margin-bottom: 10px; }
-        input[type="text"], input[type="number"], select {
+        h2 {
+            color: #0d1b4c;
+            margin-bottom: 10px;
+        }
+        .buscador {
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="number"], select, .cantidad {
             width: 100%;
             padding: 8px;
             border: 1px solid #bbb;
@@ -54,284 +63,302 @@ if ($result === false) {
             margin-top: 5px;
             font-size: 14px;
         }
-
-        /* --- ESTILO DEL SELECT BUSCABLE --- */
-        .searchable-select { position: relative; width: 100%; }
-        .searchable-select input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #bbb;
+        .producto-item {
+            display: inline-block;
+            vertical-align: top;
+            width: 30%;
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: transform 0.1s ease-in-out;
         }
-        .searchable-results {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #bbb;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 200;
-            border-radius: 6px;
-            display: none;
+        .producto-item:hover {
+            transform: scale(1.02);
+            background-color: #fdfdfd;
         }
-        .searchable-results div {
-            padding: 8px;
+        .producto-item strong {
+            color: #0d1b4c;
+        }
+        .btn-primary, .btn-secondary, .btn-success {
+            cursor: pointer;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
+        .btn-secondary { background-color: #888; }
+        .btn-success { background-color: #1c56ca; }
+        .btn-success:hover { background-color: #2a64d1; }
+        .lista {
+            list-style: none;
+            padding-left: 15px;
+        }
+        .tabs {
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            background-color: #0d1b4c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
             cursor: pointer;
         }
-        .searchable-results div:hover {
-            background-color: #e6e6e6;
+        .tab-btn:hover {
+            background-color: #e66e1d;
+        }
+        .alert-info {
+            background-color: #e0e7ff;
+            color: #0d1b4c;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #total {
+            color: #0d1b4c;
+            font-weight: bold;
+        }
+        a.link-ventas {
+            color: #0d1b4c;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a.link-ventas:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-<div class="container">
+    <div class="container">
 
-<!-- Sidebar -->
-<aside class="sidebar">
-    <div class="logo">
-        <img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100">
-    </div>
-    <nav>
-        <a href="dashboard_vendedor.php"><span class="icon">🏠</span> Inicio</a>
-        <a href="ingresar_producto.php"><span class="icon">🛠️</span> Productos</a>
-        <a href="clientes.php"><span class="icon">👥</span> Clientes</a>
-        <a href="ventas.php" class="active"><span class="icon">💰</span> Ventas</a>
-        <a href="reporte_ventas.php"><span class="icon">📈</span> Reportes de Ventas</a>
-    </nav>
-</aside>
-
-<!-- Main -->
-<div class="main">
-
-<header class="header">
-    <h1 class="title">Gestión de Ventas</h1>
-    <div class="icons">
-        <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
-    </div>
-</header>
-
-<main class="content">
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
-        <button class="tab-btn active" onclick="window.location.href='reporte_ventas.php'">Reportes y Ventas</button>
-    </div>
-
-    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-
-        <!-- LISTA DE PRODUCTOS -->
-        <div style="flex: 2;">
-            <div class="card">
-                <h2>Listado de Productos</h2>
-
-                <input type="text" id="buscadorProductos" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
-
-                <div id="listaProductosContainer">
-                    <?php
-                    if ($result && $result->num_rows > 0):
-                        while ($prod = $result->fetch_assoc()):
-                            $id = (int)$prod['id_carga'];
-                            $nombre = htmlspecialchars($prod['nombre_producto']);
-                            $precio = number_format((float)$prod['precio_venta'], 2, '.', '');
-                            $stock = (int)$prod['stockDisponible'];
-                    ?>
-                            <div class="producto-item">
-                                <strong><?= $nombre ?></strong><br>
-                                💲 <?= $precio ?><br>
-                                <small>Stock: <?= $stock ?></small><br>
-
-                                <input type="checkbox"
-                                        name="productos[]"
-                                        value="<?= $id ?>"
-                                        data-nombre="<?= $nombre ?>"
-                                        data-precio="<?= $precio ?>"
-                                        data-stock="<?= $stock ?>"
-                                        onclick="actualizarProductos(this)">
-                                <label> Seleccionar</label>
-
-                                <select class="cantidad mt-2"
-                                        name="cantidad_<?= $id ?>"
-                                        style="display:none;"
-                                        onchange="actualizarTotal()">
-                                    <?php for ($i = 1; $i <= $stock; $i++): ?>
-                                        <option value="<?= $i ?>"><?= $i ?></option>
-                                    <?php endfor; ?>
-                                </select>
-                            </div>
-                    <?php
-                        endwhile;
-                    else:
-                    ?>
-                    <div class="alert-info">No hay productos en stock.</div>
-                    <?php endif; ?>
-                </div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../../assets/img/logo.ico" alt="Logo" width="200" height="100">
             </div>
-        </div>
+            <nav>
+                <a href="dashboard.php"><span class="icon">🏠</span> <span class="text">Inicio</span></a>
+                <a href="proveedores.php"><span class="icon">📦</span> <span class="text">Proveedores</span></a>
+                <a href="ingresar_producto.php"><span class="icon">🛠️</span> <span class="text">Productos</span></a>
+                <a href="clientes.php"><span class="icon">👥</span> <span class="text">Clientes</span></a>
+                <a href="ventas.php" class="active"><span class="icon">💰</span> <span class="text">Ventas</span></a>
+                <a href="reporte_ventas.php"><span class="icon">📈</span> <span class="text">Reportes de Ventas</span></a>
+            </nav>
+        </aside>
 
-        <!-- FORMULARIO DE VENTA -->
-        <div style="flex: 1; min-width: 300px;">
-            <div class="card">
-                <h2>Registrar Venta</h2>
+        <!-- Main -->
+        <div class="main">
 
-                <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="title">Gestión de Ventas</h1>
+                <div class="icons">
+                    <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
+                </div>
+            </header>
 
-                    <p>Nombre del Cliente</p>
+            <!-- Contenido Principal -->
+            <main class="content">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="window.location.href='ingresar_producto.php'">Carga Producto</button>
+                    <button class="tab-btn active" onclick="window.location.href='reporte_ventas.php'">Reportes y Ventas</button>
+                </div>
 
-                    <!-- SELECT BUSCABLE -->
-                    <div class="searchable-select">
-                        <input type="text" id="searchCliente" placeholder="Buscar cliente...">
-                        <input type="hidden" name="cliente" id="clienteHidden" required>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
 
-                        <div class="searchable-results" id="clienteResultados"></div>
+                    <!-- Lista de productos -->
+                    <div style="flex: 2;">
+                        <div class="card">
+                            <h2>Listado de Productos</h2>
+                            <div class="buscador">
+                                <input type="text" id="buscadorProductos" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
+                            </div>
+
+                            <div id="listaProductosContainer">
+                                <?php
+                                if ($result && $result->num_rows > 0):
+                                    while ($prod = $result->fetch_assoc()):
+                                        $id = (int)$prod['id_carga'];
+                                        $nombre = htmlspecialchars($prod['nombre_producto']);
+                                        $precio = number_format((float)$prod['precio_venta'], 2, '.', '');
+                                        $stock = (int)$prod['stockDisponible'];
+                                ?>
+                                        <div class="producto-item">
+                                            <strong><?php echo $nombre; ?></strong><br>
+                                            💲 <?php echo $precio; ?><br>
+                                            <small>Stock: <?php echo $stock; ?></small><br>
+
+                                            <input type="checkbox" name="productos[]" value="<?php echo $id; ?>"
+                                                data-nombre="<?php echo $nombre; ?>"
+                                                data-precio="<?php echo $precio; ?>"
+                                                data-stock="<?php echo $stock; ?>"
+                                                onclick="actualizarProductos(this)">
+                                            <label> Seleccionar</label>
+
+                                            <select class="cantidad mt-2" name="cantidad_<?php echo $id; ?>" style="display:none;"
+                                                onchange="actualizarTotal()">
+                                                <?php for ($i = 1; $i <= $stock; $i++): ?>
+                                                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                <?php endfor; ?>
+                                            </select>
+                                        </div>
+                                <?php
+                                    endwhile;
+                                else:
+                                ?>
+                                    <div class="alert-info">No hay productos disponibles en inventario.</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
 
-                    <?php
-                    $consulta = "SELECT id_cliente, nombre, apellido, dni FROM clientes WHERE estado='activo'";
-                    $clientes = $conn->query($consulta);
+                    <!-- Formulario de Venta -->
+                    <div style="flex: 1; min-width: 300px;">
+                        <div class="card">
+                            <h2>Registrar Venta</h2>
 
-                    $jsonClientes = [];
-                    while($c = $clientes->fetch_assoc()){
-                        $jsonClientes[] = [
-                            "id" => $c['id_cliente'],
-                            "text" => $c['nombre'] . " " . $c['apellido'] . " (DNI: " . $c['dni'] . ")"
-                        ];
-                    }
-                    ?>
+                            <form action="guardar_venta.php" method="POST" onsubmit="return validarFormulario()">
 
-                    <script>
-                        const clientes = <?= json_encode($jsonClientes); ?>;
+                                <p>Nombre del Cliente</p>
 
-                        const input = document.getElementById('searchCliente');
-                        const results = document.getElementById('clienteResultados');
-                        const hidden = document.getElementById('clienteHidden');
+                                <!-- BUSCADOR AGREGADO PARA CLIENTES -->
+                                <input type="text" id="buscarCliente" placeholder="Buscar cliente..." onkeyup="filtrarClientes()">
 
-                        input.addEventListener('input', function(){
-                            const val = this.value.toLowerCase();
-                            results.innerHTML = "";
-                            results.style.display = "block";
+                                <?php
+                                // Consulta modificada con DNI
+                                $consulta = "SELECT id_cliente, nombre, apellido, dni FROM clientes WHERE estado = 'activo'";
+                                $resultado = $conn->query($consulta);
+                                ?>
 
-                            clientes
-                                .filter(c => c.text.toLowerCase().includes(val))
-                                .forEach(c => {
-                                    const div = document.createElement("div");
-                                    div.textContent = c.text;
-                                    div.onclick = () => {
-                                        input.value = c.text;
-                                        hidden.value = c.id;
-                                        results.style.display = "none";
-                                    };
-                                    results.appendChild(div);
-                                });
-                        });
+                                <select name="cliente" id="selectCliente" required>
+                                    <option value="" disabled selected>Seleccione un cliente</option>
+                                    <?php while ($row = $resultado->fetch_assoc()) { ?>
+                                        <option value="<?= $row['id_cliente']; ?>">
+                                            <?= $row['nombre'] . ' ' . $row['apellido'] . ' - DNI: ' . $row['dni']; ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
 
-                        document.addEventListener("click", function(e){
-                            if(!results.contains(e.target) && e.target !== input){
-                                results.style.display = "none";
-                            }
-                        });
-                    </script>
+                                <p>Método de Pago</p>
+                                <select name="metodo_pago" required>
+                                    <option value="" disabled selected>Seleccione un método de pago</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                </select>
 
-                    <p>Método de Pago</p>
-                    <select name="metodo_pago" required>
-                        <option value="" disabled selected>Seleccione un método</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="Transferencia">Transferencia</option>
-                    </select>
+                                <input type="hidden" name="productos_seleccionados" id="productos_seleccionados">
+                                <input type="hidden" name="total_venta" id="total_venta">
 
-                    <input type="hidden" name="productos_seleccionados" id="productos_seleccionados">
-                    <input type="hidden" name="total_venta" id="total_venta">
+                                <p>Productos Seleccionados:</p>
+                                <ul id="listaProductos" class="lista"></ul>
 
-                    <p>Productos Seleccionados:</p>
-                    <ul id="listaProductos" class="lista"></ul>
+                                <h3>Total: 💰$<span id="total">0.00</span></h3>
 
-                    <h3>Total: 💰$<span id="total">0.00</span></h3>
+                                <br>
+                                <button type="submit" class="btn-success" style="width:100%;">Confirmar Venta</button>
+                            </form>
+                        </div>
+                    </div>
 
-                    <br>
-                    <button type="submit" class="btn-success" style="width:100%;">Confirmar Venta</button>
-                </form>
-
-            </div>
+                </div>
+            </main>
         </div>
-
     </div>
-</main>
-</div>
-</div>
 
-<script>
-function validarFormulario() {
-    var checkboxes = document.querySelectorAll('input[name="productos[]"]:checked');
-    if (checkboxes.length === 0) {
-        alert('Debe seleccionar al menos un producto.');
-        return false;
-    }
+    <script>
+        function validarFormulario() {
+            var checkboxes = document.querySelectorAll('input[name="productos[]"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Debe seleccionar al menos un producto.');
+                return false;
+            }
 
-    if(!document.getElementById("clienteHidden").value){
-        alert("Debe seleccionar un cliente válido.");
-        return false;
-    }
+            let productos = [];
+            let descripcion = [];
+            let total = 0;
 
-    let productos = [];
-    let total = 0;
+            checkboxes.forEach(function(cb) {
+                let nombre = cb.dataset.nombre;
+                let precio = parseFloat(cb.dataset.precio);
+                let id_carga = cb.value;
+                let sel = cb.parentElement.querySelector('select');
+                let cantidad = sel ? parseInt(sel.value) : 1;
 
-    checkboxes.forEach(cb => {
-        let precio = parseFloat(cb.dataset.precio);
-        let id_carga = cb.value;
-        let sel = cb.parentElement.querySelector('select');
-        let cantidad = sel ? parseInt(sel.value) : 1;
+                productos.push({ id_carga, cantidad });
+                descripcion.push(`${nombre} x${cantidad}`);
+                total += precio * cantidad;
+            });
 
-        productos.push({ id_carga, cantidad });
-        total += precio * cantidad;
-    });
+            document.getElementById('productos_seleccionados').value = JSON.stringify(productos);
+            document.getElementById('total_venta').value = total.toFixed(2);
 
-    document.getElementById('productos_seleccionados').value = JSON.stringify(productos);
-    document.getElementById('total_venta').value = total.toFixed(2);
+            const lista = document.getElementById('listaProductos');
+            lista.innerHTML = '';
+            descripcion.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                lista.appendChild(li);
+            });
 
-    return true;
-}
+            return true;
+        }
 
-function actualizarProductos(checkbox) {
-    const select = checkbox.parentElement.querySelector('select');
-    if (!select) return;
-    select.style.display = checkbox.checked ? 'block' : 'none';
-    if (!checkbox.checked) select.value = 1;
-    actualizarTotal();
-}
+        function actualizarProductos(checkbox) {
+            const select = checkbox.parentElement.querySelector('select');
+            if (!select) return;
+            select.style.display = checkbox.checked ? 'block' : 'none';
+            if (!checkbox.checked) select.value = 1;
+            actualizarTotal();
+        }
 
-function actualizarTotal() {
-    let total = 0;
-    const lista = document.getElementById('listaProductos');
-    lista.innerHTML = '';
+        function actualizarTotal() {
+            let total = 0;
+            const lista = document.getElementById('listaProductos');
+            lista.innerHTML = '';
 
-    document.querySelectorAll('input[name="productos[]"]:checked').forEach(cb => {
-        const precio = parseFloat(cb.dataset.precio);
-        const select = cb.parentElement.querySelector('select');
-        const cantidad = select ? parseInt(select.value) : 1;
-        total += precio * cantidad;
+            document.querySelectorAll('input[name="productos[]"]:checked').forEach(cb => {
+                const precio = parseFloat(cb.dataset.precio);
+                const select = cb.parentElement.querySelector('select');
+                const cantidad = select ? parseInt(select.value) : 1;
+                total += precio * cantidad;
 
-        const li = document.createElement('li');
-        li.textContent = `${cb.dataset.nombre} x${cantidad} - $${(precio * cantidad).toFixed(2)}`;
-        lista.appendChild(li);
-    });
+                const li = document.createElement('li');
+                li.textContent = `${cb.dataset.nombre} x${cantidad} - $${(precio * cantidad).toFixed(2)}`;
+                lista.appendChild(li);
+            });
 
-    document.getElementById('total').textContent = total.toFixed(2);
-}
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
 
-function filtrarProductos() {
-    const filtro = document.getElementById('buscadorProductos').value.toLowerCase();
-    document.querySelectorAll('.producto-item').forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(filtro) ? '' : 'none';
-    });
-}
-</script>
+        function filtrarProductos() {
+            const filtro = document.getElementById('buscadorProductos').value.toLowerCase();
+            document.querySelectorAll('.producto-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filtro) ? '' : 'none';
+            });
+        }
 
-<?php $conn->close(); ?>
+        // 
+        function filtrarClientes() {
+            let input = document.getElementById("buscarCliente").value.toLowerCase();
+            let select = document.getElementById("selectCliente");
+            let opciones = select.getElementsByTagName("option");
+
+            for (let i = 1; i < opciones.length; i++) {
+                let texto = opciones[i].textContent.toLowerCase();
+                opciones[i].style.display = texto.includes(input) ? "" : "none";
+            }
+        }
+    </script>
+
 </body>
 </html>
 
-
-
+<?php $conn->close(); ?>

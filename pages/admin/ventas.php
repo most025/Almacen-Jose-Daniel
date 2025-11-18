@@ -161,6 +161,7 @@ if ($result === false) {
                 <h1 class="title">Gestión de Ventas</h1>
                 <div class="icons">
                     <button class="btn-primary"><a id="botonCerrar">Cerrar Sesión</a></button>
+                    <script src="../../assets/js/alerta.js"></script>
                 </div>
             </header>
 

@@ -21,6 +21,7 @@ if ($result === false) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,26 +37,35 @@ if ($result === false) {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: #f5f5f5;
         }
+
         .container {
             display: flex;
         }
+
         .content {
             padding: 20px;
         }
+
         .card {
             background-color: white;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
+
         h2 {
             color: #0d1b4c;
             margin-bottom: 10px;
         }
+
         .buscador {
             margin-bottom: 10px;
         }
-        input[type="text"], input[type="number"], select, .cantidad {
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        .cantidad {
             width: 100%;
             padding: 8px;
             border: 1px solid #bbb;
@@ -63,6 +73,7 @@ if ($result === false) {
             margin-top: 5px;
             font-size: 14px;
         }
+
         .producto-item {
             display: inline-block;
             vertical-align: top;
@@ -72,17 +83,22 @@ if ($result === false) {
             border-radius: 10px;
             margin: 6px;
             padding: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
             transition: transform 0.1s ease-in-out;
         }
+
         .producto-item:hover {
             transform: scale(1.02);
             background-color: #fdfdfd;
         }
+
         .producto-item strong {
             color: #0d1b4c;
         }
-        .btn-primary, .btn-secondary, .btn-success {
+
+        .btn-primary,
+        .btn-secondary,
+        .btn-success {
             cursor: pointer;
             border: none;
             padding: 10px 15px;
@@ -91,16 +107,28 @@ if ($result === false) {
             font-size: 14px;
             text-align: center;
         }
-        .btn-secondary { background-color: #888; }
-        .btn-success { background-color: #1c56ca; }
-        .btn-success:hover { background-color: #2a64d1; }
+
+        .btn-secondary {
+            background-color: #888;
+        }
+
+        .btn-success {
+            background-color: #1c56ca;
+        }
+
+        .btn-success:hover {
+            background-color: #2a64d1;
+        }
+
         .lista {
             list-style: none;
             padding-left: 15px;
         }
+
         .tabs {
             margin-bottom: 15px;
         }
+
         .tab-btn {
             background-color: #0d1b4c;
             color: white;
@@ -109,9 +137,11 @@ if ($result === false) {
             border-radius: 5px;
             cursor: pointer;
         }
+
         .tab-btn:hover {
             background-color: #e66e1d;
         }
+
         .alert-info {
             background-color: #e0e7ff;
             color: #0d1b4c;
@@ -119,16 +149,19 @@ if ($result === false) {
             border-radius: 5px;
             text-align: center;
         }
+
         #total {
             color: #0d1b4c;
             font-weight: bold;
         }
+
         a.link-ventas {
             color: #0d1b4c;
             font-weight: bold;
             text-decoration: none;
             margin-left: 10px;
         }
+
         a.link-ventas:hover {
             text-decoration: underline;
         }
@@ -179,48 +212,47 @@ if ($result === false) {
                         <div class="card">
                             <h2>Listado de Productos</h2>
                             <div class="buscador">
-                                <input type="text" id="buscadorProductos" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
+                                <input type="text" id="buscadorProductos" placeholder="Buscar producto..."
+                                    onkeyup="filtrarProductos()">
                             </div>
 
                             <div id="listaProductosContainer">
                                 <?php
                                 if ($result && $result->num_rows > 0):
                                     while ($prod = $result->fetch_assoc()):
-                                        $id = (int)$prod['id_carga'];
+                                        $id = (int) $prod['id_carga'];
                                         $nombre = htmlspecialchars($prod['nombre_producto']);
-                                        $precio = number_format((float)$prod['precio_venta'], 2, '.', '');
-                                        $stock = (int)$prod['stockDisponible'];
-                                ?>
+                                        $precio = number_format((float) $prod['precio_venta'], 2, '.', '');
+                                        $stock = (int) $prod['stockDisponible'];
+                                        ?>
                                         <div class="producto-item">
                                             <strong><?php echo $nombre; ?></strong><br>
                                             💲 <?php echo $precio; ?><br>
                                             <small>Stock: <?php echo $stock; ?></small><br>
 
                                             <input type="checkbox" name="productos[]" value="<?php echo $id; ?>"
-                                                data-nombre="<?php echo $nombre; ?>"
-                                                data-precio="<?php echo $precio; ?>"
-                                                data-stock="<?php echo $stock; ?>"
-                                                onclick="actualizarProductos(this)">
+                                                data-nombre="<?php echo $nombre; ?>" data-precio="<?php echo $precio; ?>"
+                                                data-stock="<?php echo $stock; ?>" onclick="actualizarProductos(this)">
                                             <label> Seleccionar</label>
 
-                                            <select class="cantidad mt-2" name="cantidad_<?php echo $id; ?>" style="display:none;"
-                                                onchange="actualizarTotal()">
+                                            <select class="cantidad mt-2" name="cantidad_<?php echo $id; ?>"
+                                                style="display:none;" onchange="actualizarTotal()">
                                                 <?php for ($i = 1; $i <= $stock; $i++): ?>
                                                     <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                                 <?php endfor; ?>
                                             </select>
                                         </div>
-                                <?php
+                                        <?php
                                     endwhile;
                                 else:
-                                ?>
+                                    ?>
                                     <div class="alert-info">No hay productos disponibles en inventario.</div>
                                 <?php endif; ?>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Formulario de Venta -->
+                    <!--------------------- Formulario de Venta-------------------------------------------------->
                     <div style="flex: 1; min-width: 300px;">
                         <div class="card">
                             <h2>Registrar Venta</h2>
@@ -230,14 +262,15 @@ if ($result === false) {
                                 <p>Nombre del Cliente</p>
 
                                 <!-- BUSCADOR AGREGADO PARA CLIENTES -->
-                                <input type="text" id="buscarCliente" placeholder="Buscar cliente..." onkeyup="filtrarClientes()">
+                                <input type="text" id="buscarCliente" placeholder="Buscar cliente..."
+                                    onkeyup="filtrarClientes()">
 
                                 <?php
                                 // Consulta modificada con DNI
                                 $consulta = "SELECT id_cliente, nombre, apellido, dni FROM clientes WHERE estado = 'activo'";
                                 $resultado = $conn->query($consulta);
                                 ?>
-
+                                <!--Campo de selección del  cliente-->
                                 <select name="cliente" id="selectCliente" required>
                                     <option value="" disabled selected>Seleccione un cliente</option>
                                     <?php while ($row = $resultado->fetch_assoc()) { ?>
@@ -267,6 +300,7 @@ if ($result === false) {
                             </form>
                         </div>
                     </div>
+                    <!----------------------------------------------------------------------------------------------------->
 
                 </div>
             </main>
@@ -285,7 +319,7 @@ if ($result === false) {
             let descripcion = [];
             let total = 0;
 
-            checkboxes.forEach(function(cb) {
+            checkboxes.forEach(function (cb) {
                 let nombre = cb.dataset.nombre;
                 let precio = parseFloat(cb.dataset.precio);
                 let id_carga = cb.value;
@@ -360,9 +394,7 @@ if ($result === false) {
     </script>
 
 </body>
+
 </html>
 
 <?php $conn->close(); ?>
-
-
-
